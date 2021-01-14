@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane fx:controller="sample.Controller" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="471.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <left>
+      <VBox alignment="TOP_CENTER" prefHeight="471.0" prefWidth="30.0" styleClass="leftMenuVbox" stylesheets="@Styles/LeftMenuVBox.css" BorderPane.alignment="CENTER">
+         <children>
+            <Button mnemonicParsing="false" styleClass="imageButtonHome" stylesheets="@Styles/ImageButtonHome.css" />
+            <Button mnemonicParsing="false" styleClass="imageButtonProjects" stylesheets="@Styles/ImageButtonProjects.css" />
+            <Button mnemonicParsing="false" styleClass="imageButtonIssues" stylesheets="@Styles/ImageButtonIssues.css" />
+            <Button mnemonicParsing="false" styleClass="imageButtonCustomers" stylesheets="@Styles/ImageButtonCustomers.css" />
+            <Button mnemonicParsing="false" styleClass="imageButtonUsers" stylesheets="@Styles/ImageButtonUsers.css" />
+         </children>
+      </VBox>
+   </left>
+</BorderPane>

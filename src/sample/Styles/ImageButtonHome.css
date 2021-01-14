@@ -1,0 +1,38 @@
+.imageButtonHome {
+    -fx-background-image: url("../Images/home.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: 32;
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-background-color: white;
+    -fx-border-radius: 5;
+    -fx-border-color: black;
+    -fx-background-insets: 1;
+}
+
+.imageButtonHome:hover{
+    -fx-background-image: url("../Images/home.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: 32;
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-background-color: gray;
+    -fx-border-radius: 5;
+    -fx-border-color: blue;
+    -fx-background-insets: 1;
+}
+
+.imageButtonHome:pressed{
+    -fx-background-image: url("../Images/home.png");
+    -fx-background-repeat: stretch;
+    -fx-background-position: center center;
+    -fx-background-size: 32;
+    -fx-min-width: 42;
+    -fx-min-height: 42;
+    -fx-background-color: gray;
+    -fx-border-radius: 5;
+    -fx-border-color: green;
+    -fx-background-insets: 1;
+}
