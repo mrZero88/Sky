@@ -1,0 +1,6 @@
+.view {
+    -fx-background-radius: 5;
+    -fx-background-color: white;
+    -fx-padding: 20;
+    -fx-background-insets: 1;
+}
