@@ -1,21 +1,14 @@
 package com.models;
 
 import javafx.beans.property.*;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
-import javax.imageio.ImageIO;
-import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-public class Currency {
+public class ProjectState {
 
     private IntegerProperty id;
     private StringProperty title;
-    private StringProperty symbol;
-    private StringProperty iso;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -30,6 +23,10 @@ public class Currency {
         this.id.set(id);
     }
 
+    public IntegerProperty idProperty() {
+        return id;
+    }
+
     public String getTitle() {
         return title.get();
     }
@@ -40,30 +37,6 @@ public class Currency {
 
     public StringProperty titleProperty() {
         return title;
-    }
-
-    public String getSymbol() {
-        return symbol.get();
-    }
-
-    public void setSymbol(String symbol) {
-        this.symbol.set(symbol);
-    }
-
-    public StringProperty symbolProperty() {
-        return symbol;
-    }
-
-    public String getIso() {
-        return iso.get();
-    }
-
-    public void setIso(String iso) {
-        this.iso.set(iso);
-    }
-
-    public StringProperty isoProperty() {
-        return iso;
     }
 
     public Timestamp getCreatedAt() {
@@ -126,20 +99,18 @@ public class Currency {
         return active;
     }
 
-    public Currency() {
+    public ProjectState() {
         this.id = new SimpleIntegerProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
-        this.symbol = new SimpleStringProperty(this, "symbol");
-        this.iso = new SimpleStringProperty(this, "iso");
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
-        this.updatedUserId = new SimpleLongProperty(this, "updatedUserId", 1);
+        this.updatedUserId = new SimpleLongProperty(this, "UpdatedUserId", 1);
         this.active = new SimpleBooleanProperty(this, "active", true);
     }
 
     @Override
     public String toString() {
-        return this.getSymbol();
+        return this.getTitle();
     }
 }

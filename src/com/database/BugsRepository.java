@@ -76,7 +76,7 @@ public class BugsRepository extends BaseRepository {
     public ObservableList<Bug> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);
-            List<Bug> bugs = new ArrayList<Bug>();
+            List<Bug> bugs = new ArrayList<>();
             statement = connect.createStatement();
             resultSet = statement.executeQuery("select * from bugs where active=true");
             while (resultSet.next()) {

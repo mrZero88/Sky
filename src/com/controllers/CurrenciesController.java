@@ -35,28 +35,28 @@ public class CurrenciesController {
     }
 
     private void addTableColumns() {
-        TableColumn<Bug, Long> tableColumnId = new TableColumn<>("Id");
+        TableColumn<Currency, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<Bug, String> tableColumnTitle = new TableColumn<>("Title");
+        TableColumn<Currency, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<Bug, String> tableColumnSymbol = new TableColumn<>("Symbol");
+        TableColumn<Currency, String> tableColumnSymbol = new TableColumn<>("Symbol");
         tableColumnSymbol.setCellValueFactory(new PropertyValueFactory<>("symbol"));
 
-        TableColumn<Bug, String> tableColumnIso = new TableColumn<>("Iso");
+        TableColumn<Currency, String> tableColumnIso = new TableColumn<>("Iso");
         tableColumnIso.setCellValueFactory(new PropertyValueFactory<>("iso"));
 
-        TableColumn<Bug, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
+        TableColumn<Currency, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
-        TableColumn<Bug, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
+        TableColumn<Currency, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<Bug, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
+        TableColumn<Currency, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
         tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
 
-        TableColumn<Bug, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
+        TableColumn<Currency, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
 
         currenciesTable.getColumns().addAll(tableColumnId, tableColumnTitle,

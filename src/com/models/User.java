@@ -321,4 +321,9 @@ public class User {
         this.updatedUserId = new SimpleLongProperty(this, "updatedUserId", 1);
         this.active = new SimpleBooleanProperty(this, "active",true);
     }
+
+    @Override
+    public String toString() {
+        return this.firstName.get() + " " + this.lastName.get();
+    }
 }

@@ -139,6 +139,6 @@ public class Bug {
 
     @Override
     public String toString() {
-        return "Bug{" + "title=" + title + '}';
+        return this.getTitle();
     }
 }
