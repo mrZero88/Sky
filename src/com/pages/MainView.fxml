@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox fx:controller="com.Controllers.MainController" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controllers.MainController">
    <children>
       <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
          <menus>
@@ -71,13 +71,28 @@
                   <MenuItem mnemonicParsing="false" onAction="#onNewUserClicked" text="New User" />
                </items>
             </Menu>
+            <Menu mnemonicParsing="false" text="Configurations">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#onCountriesClicked" text="Countries" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewCountryClicked" text="New Country" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onCurrenciesClicked" text="Currencies" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewCurrencyClicked" text="New Currency" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTechnologiesClicked" text="Technologies" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewTechnologyClicked" text="New Technology" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onProjectStatesClicked" text="Project States" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewProjectStateClicked" text="New Project State" />
+               </items>
+            </Menu>
             <Menu mnemonicParsing="false" text="Help">
                <items>
-                  <MenuItem mnemonicParsing="false" text="About MyHelloApp" />
+                  <MenuItem mnemonicParsing="false" text="About" />
                </items>
             </Menu>
          </menus>
       </MenuBar>
-      <AnchorPane fx:id="rootAnchor" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundAnchorPane" stylesheets="@../Styles/BackgroundAnchorPane.css" VBox.vgrow="ALWAYS" />
+      <AnchorPane fx:id="rootAnchor" prefHeight="200.0" prefWidth="200.0" styleClass="backgroundAnchorPane" stylesheets="@../styles/BackgroundAnchorPane.css" VBox.vgrow="ALWAYS" />
    </children>
 </VBox>

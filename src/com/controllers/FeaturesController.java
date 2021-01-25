@@ -1,4 +1,4 @@
-package com.Controllers;
+package com.controllers;
 
 public class FeaturesController {
 
