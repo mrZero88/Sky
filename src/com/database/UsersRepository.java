@@ -3,6 +3,7 @@ package com.database;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+
 import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -33,11 +34,12 @@ public class UsersRepository extends BaseRepository {
                             "adress, " +
                             "postal_code, " +
                             "phone_number, " +
+                            "gender_id, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getUserName());
@@ -51,11 +53,17 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setString(11, user.getAdress());
             preparedStatement.setString(12, user.getPostalCode());
             preparedStatement.setString(13, user.getPhoneNumber());
-            preparedStatement.setTimestamp(14, user.getCreatedAt());
-            preparedStatement.setTimestamp(15, user.getUpdatedAt());
-            preparedStatement.setLong(16, user.getCreatedUserId());
-            preparedStatement.setLong(17, user.getUpdatedUserId());
-            preparedStatement.executeUpdate();
+            preparedStatement.setInt(14, user.getGenderId());
+            preparedStatement.setTimestamp(15, user.getCreatedAt());
+            preparedStatement.setTimestamp(16, user.getUpdatedAt());
+            preparedStatement.setLong(17, user.getCreatedUserId());
+            preparedStatement.setLong(18, user.getUpdatedUserId());
+            if (preparedStatement.executeUpdate() == 1) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select id from users order by id desc limit 1");
+                resultSet.next();
+                user.setId(resultSet.getInt("id"));
+            }
             return user;
         } catch (Exception e) {
             throw e;
@@ -87,6 +95,7 @@ public class UsersRepository extends BaseRepository {
             user.setPostalCode(resultSet.getString("postal_code"));
             user.setPhoneNumber(resultSet.getString("phone_number"));
             user.setRememberToken(resultSet.getString("remember_token"));
+            user.setGenderId(resultSet.getInt("gender_id"));
             user.setCreatedAt(resultSet.getTimestamp("created_at"));
             user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -124,6 +133,7 @@ public class UsersRepository extends BaseRepository {
                 user.setPostalCode(resultSet.getString("postal_code"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setRememberToken(resultSet.getString("remember_token"));
+                user.setGenderId(resultSet.getInt("gender_id"));
                 user.setCreatedAt(resultSet.getTimestamp("created_at"));
                 user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -160,6 +170,7 @@ public class UsersRepository extends BaseRepository {
                             " postal_code = ?, " +
                             " phone_number = ?, " +
                             " remember_token = ?, " +
+                            " gender_id = ?, " +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
@@ -178,11 +189,11 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setString(13, user.getPostalCode());
             preparedStatement.setString(14, user.getPhoneNumber());
             preparedStatement.setString(15, user.getRememberToken());
-            preparedStatement.setTimestamp(16, user.getUpdatedAt());
-            preparedStatement.setLong(17, user.getUpdatedUserId());
-            preparedStatement.setLong(18, user.getId());
+            preparedStatement.setInt(16, user.getGenderId());
+            preparedStatement.setTimestamp(17, user.getUpdatedAt());
+            preparedStatement.setLong(18, user.getUpdatedUserId());
+            preparedStatement.setLong(19, user.getId());
             preparedStatement.executeUpdate();
-            user = getById(user.getId());
             return user;
         } catch (Exception e) {
             throw e;

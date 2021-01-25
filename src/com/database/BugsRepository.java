@@ -27,7 +27,7 @@ public class BugsRepository extends BaseRepository {
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, bug.getTitle());
             preparedStatement.setString(2, bug.getDescription());
             preparedStatement.setLong(3, bug.getProjectId());
@@ -35,7 +35,12 @@ public class BugsRepository extends BaseRepository {
             preparedStatement.setTimestamp(5, bug.getUpdatedAt());
             preparedStatement.setLong(6, bug.getCreatedUserId());
             preparedStatement.setLong(7, bug.getUpdatedUserId());
-            preparedStatement.executeUpdate();
+            if (preparedStatement.executeUpdate() == 1) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select id from bugs order by id desc limit 1");
+                resultSet.next();
+                bug.setId(resultSet.getInt("id"));
+            }
             return bug;
         } catch (Exception e) {
             throw e;

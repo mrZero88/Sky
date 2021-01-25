@@ -26,6 +26,7 @@ public class User {
     private StringProperty postalCode;
     private StringProperty phoneNumber;
     private StringProperty rememberToken;
+    private IntegerProperty genderId;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -224,6 +225,18 @@ public class User {
         return rememberToken;
     }
 
+    public int getGenderId() {
+        return genderId.get();
+    }
+
+    public void setGenderId(int genderId) {
+        this.genderId.set(genderId);
+    }
+
+    public IntegerProperty genderIdProperty() {
+        return genderId;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt.get();
     }
@@ -301,6 +314,7 @@ public class User {
         this.postalCode = new SimpleStringProperty(this, "postalCode");
         this.phoneNumber = new SimpleStringProperty(this, "phoneNumber");
         this.rememberToken = new SimpleStringProperty(this, "rememberToken");
+        this.genderId = new SimpleIntegerProperty(this, "genderId",1);
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
