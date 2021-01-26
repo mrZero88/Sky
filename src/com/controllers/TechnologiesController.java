@@ -24,6 +24,7 @@ public class TechnologiesController {
         try {
             TechnologiesRepository technologiesRepository = new TechnologiesRepository();
             ObservableList<Technology> technologies = technologiesRepository.getAll();
+            technologiesRepository.loadUsers(technologies);
             technologiesTable.setItems(technologies);
             addTableColumns();
         } catch (Exception e) {
@@ -46,10 +47,10 @@ public class TechnologiesController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<Technology, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<Technology, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         technologiesTable.getColumns().addAll(tableColumnId, tableColumnName,
                 tableColumnCreatedAt, tableColumnUpdatedAt,

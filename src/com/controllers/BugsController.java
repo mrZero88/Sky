@@ -23,6 +23,7 @@ public class BugsController {
         try {
             BugsRepository bugsRepository = new BugsRepository();
             ObservableList<Bug> bugs = bugsRepository.getAll();
+            bugsRepository.loadUsers(bugs);
             bugsTable.setItems(bugs);
             addTableColumns();
         } catch (Exception e) {
@@ -48,10 +49,10 @@ public class BugsController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<Bug, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<Bug, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         bugsTable.getColumns().addAll(tableColumnId, tableColumnTitle,
                 tableColumnProjectId, tableColumnCreatedAt, tableColumnUpdatedAt,

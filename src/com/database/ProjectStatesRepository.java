@@ -1,7 +1,9 @@
 package com.database;
 
 import com.models.Bug;
+import com.models.Project;
 import com.models.ProjectState;
+import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +11,9 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ProjectStatesRepository extends BaseRepository {
 
@@ -129,6 +133,29 @@ public class ProjectStatesRepository extends BaseRepository {
             throw e;
         } finally {
             closeConnections();
+        }
+    }
+
+    public void loadUsers(ObservableList<ProjectState> projectStates) throws Exception {
+        if(projectStates.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (ProjectState projectState : projectStates) {
+            set.add("" + projectState.getCreatedUserId());
+            set.add("" + projectState.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (ProjectState projectState : projectStates) {
+            for (User user : users) {
+                if (projectState.getCreatedUserId() == user.getId())
+                    projectState.setCreatedUser(user);
+                if (projectState.getUpdatedUserId() == user.getId())
+                    projectState.setUpdatedUser(user);
+            }
         }
     }
 

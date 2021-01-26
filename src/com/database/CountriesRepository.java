@@ -1,6 +1,8 @@
 package com.database;
 
+import com.models.Bug;
 import com.models.Country;
+import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +11,9 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CountriesRepository extends BaseRepository {
 
@@ -154,6 +158,29 @@ public class CountriesRepository extends BaseRepository {
             throw e;
         } finally {
             closeConnections();
+        }
+    }
+
+    public void loadUsers(ObservableList<Country> countries) throws Exception {
+        if(countries.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Country country : countries) {
+            set.add("" + country.getCreatedUserId());
+            set.add("" + country.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (Country country : countries) {
+            for (User user : users) {
+                if (country.getCreatedUserId() == user.getId())
+                    country.setCreatedUser(user);
+                if (country.getUpdatedUserId() == user.getId())
+                    country.setUpdatedUser(user);
+            }
         }
     }
 

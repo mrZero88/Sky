@@ -30,6 +30,7 @@ public class CountriesController {
         try {
             CountriesRepository countriesRepository = new CountriesRepository();
             ObservableList<Country> countries = countriesRepository.getAll();
+            countriesRepository.loadUsers(countries);
             countriesTable.setItems(countries);
             addTableColumns();
         } catch (Exception e) {
@@ -58,10 +59,10 @@ public class CountriesController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<Country, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<Country, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         countriesTable.getColumns().addAll(tableColumnId, tableColumnName,
                 tableColumnShortcut, tableColumnFlag, tableColumnCreatedAt, tableColumnUpdatedAt,

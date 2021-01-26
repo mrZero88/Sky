@@ -15,6 +15,9 @@ public class ProjectState {
     private LongProperty updatedUserId;
     private BooleanProperty active;
 
+    private ObjectProperty<User> createdUser;
+    private ObjectProperty<User> updatedUser;
+
     public int getId() {
         return id.get();
     }
@@ -99,6 +102,30 @@ public class ProjectState {
         return active;
     }
 
+    public User getCreatedUser() {
+        return createdUser.get();
+    }
+
+    public void setCreatedUser(User createdUser) {
+        this.createdUser.set(createdUser);
+    }
+
+    public ObjectProperty<User> createdUserProperty() {
+        return createdUser;
+    }
+
+    public User getUpdatedUser() {
+        return updatedUser.get();
+    }
+
+    public void setUpdatedUser(User updatedUser) {
+        this.updatedUser.set(updatedUser);
+    }
+
+    public ObjectProperty<User> updatedUserProperty() {
+        return updatedUser;
+    }
+
     public ProjectState() {
         this.id = new SimpleIntegerProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
@@ -107,6 +134,8 @@ public class ProjectState {
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
         this.updatedUserId = new SimpleLongProperty(this, "UpdatedUserId", 1);
         this.active = new SimpleBooleanProperty(this, "active", true);
+        this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
+        this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
     }
 
     @Override

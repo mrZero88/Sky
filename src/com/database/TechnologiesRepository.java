@@ -1,7 +1,9 @@
 package com.database;
 
 import com.models.Bug;
+import com.models.ProjectState;
 import com.models.Technology;
+import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -9,7 +11,9 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class TechnologiesRepository extends BaseRepository {
 
@@ -135,6 +139,29 @@ public class TechnologiesRepository extends BaseRepository {
             throw e;
         } finally {
             closeConnections();
+        }
+    }
+
+    public void loadUsers(ObservableList<Technology> technologies) throws Exception {
+        if(technologies.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Technology technology : technologies) {
+            set.add("" + technology.getCreatedUserId());
+            set.add("" + technology.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (Technology technology : technologies) {
+            for (User user : users) {
+                if (technology.getCreatedUserId() == user.getId())
+                    technology.setCreatedUser(user);
+                if (technology.getUpdatedUserId() == user.getId())
+                    technology.setUpdatedUser(user);
+            }
         }
     }
 

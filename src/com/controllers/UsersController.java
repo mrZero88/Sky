@@ -24,13 +24,8 @@ public class UsersController {
     public void initialize() {
         try {
             UsersRepository usersRepository = new UsersRepository();
-
-            //User user = usersRepository.getById(1);
-
-            //user.setEmail("danielcorreia@gmail.com");
-            //usersRepository.update(user);
-
             ObservableList<User> users = usersRepository.getAll();
+            usersRepository.loadUsers(users);
             usersTable.setItems(users);
             addTableColumns();
         } catch (Exception e) {
@@ -68,10 +63,10 @@ public class UsersController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<User, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<User, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         usersTable.getColumns().addAll(tableColumnId, tableColumnFirstName, tableColumnLastName,
                 tableColumnUsername, tableColumnEmail, tableColumnBirthDate, tableColumnPhoneNumber,

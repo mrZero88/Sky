@@ -33,6 +33,9 @@ public class User {
     private LongProperty updatedUserId;
     private BooleanProperty active;
 
+    private ObjectProperty<User> createdUser;
+    private ObjectProperty<User> updatedUser;
+
     public long getId() {
         return id.get();
     }
@@ -297,6 +300,30 @@ public class User {
         return active;
     }
 
+    public User getCreatedUser() {
+        return createdUser.get();
+    }
+
+    public void setCreatedUser(User createdUser) {
+        this.createdUser.set(createdUser);
+    }
+
+    public ObjectProperty<User> createdUserProperty() {
+        return createdUser;
+    }
+
+    public User getUpdatedUser() {
+        return updatedUser.get();
+    }
+
+    public void setUpdatedUser(User updatedUser) {
+        this.updatedUser.set(updatedUser);
+    }
+
+    public ObjectProperty<User> updatedUserProperty() {
+        return updatedUser;
+    }
+
     public User() {
         this.id = new SimpleLongProperty(this, "id");
         this.firstName = new SimpleStringProperty(this, "firstName");
@@ -320,6 +347,8 @@ public class User {
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
         this.updatedUserId = new SimpleLongProperty(this, "updatedUserId", 1);
         this.active = new SimpleBooleanProperty(this, "active",true);
+        this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
+        this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
     }
 
     @Override

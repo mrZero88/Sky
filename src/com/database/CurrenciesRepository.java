@@ -1,15 +1,17 @@
 package com.database;
 
-import com.models.Bug;
+import com.models.Country;
 import com.models.Currency;
+import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class CurrenciesRepository extends BaseRepository {
 
@@ -141,6 +143,29 @@ public class CurrenciesRepository extends BaseRepository {
             throw e;
         } finally {
             closeConnections();
+        }
+    }
+
+    public void loadUsers(ObservableList<Currency> currencies) throws Exception {
+        if(currencies.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Currency currency : currencies) {
+            set.add("" + currency.getCreatedUserId());
+            set.add("" + currency.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (Currency currency : currencies) {
+            for (User user : users) {
+                if (currency.getCreatedUserId() == user.getId())
+                    currency.setCreatedUser(user);
+                if (currency.getUpdatedUserId() == user.getId())
+                    currency.setUpdatedUser(user);
+            }
         }
     }
 

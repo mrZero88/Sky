@@ -26,6 +26,7 @@ public class CurrenciesController {
         try {
             CurrenciesRepository currenciesRepository = new CurrenciesRepository();
             ObservableList<Currency> currencies = currenciesRepository.getAll();
+            currenciesRepository.loadUsers(currencies);
             currenciesTable.setItems(currencies);
             addTableColumns();
         } catch (Exception e) {
@@ -54,10 +55,10 @@ public class CurrenciesController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<Currency, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<Currency, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         currenciesTable.getColumns().addAll(tableColumnId, tableColumnTitle,
                 tableColumnSymbol, tableColumnIso, tableColumnCreatedAt, tableColumnUpdatedAt,

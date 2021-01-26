@@ -26,6 +26,7 @@ public class ProjectStatesController {
         try {
             ProjectStatesRepository projectStatesRepository = new ProjectStatesRepository();
             ObservableList<ProjectState> projectStates = projectStatesRepository.getAll();
+            projectStatesRepository.loadUsers(projectStates);
             projectStatesTable.setItems(projectStates);
             addTableColumns();
         } catch (Exception e) {
@@ -48,10 +49,10 @@ public class ProjectStatesController {
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
         TableColumn<ProjectState, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUserId"));
+        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
 
         TableColumn<ProjectState, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUserId"));
+        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         projectStatesTable.getColumns().addAll(tableColumnId, tableColumnTitle,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
