@@ -1,5 +1,6 @@
 package com.database;
 
+import com.models.Country;
 import com.models.Technology;
 import com.models.User;
 import javafx.collections.FXCollections;
@@ -112,12 +113,13 @@ public class UsersRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<User> getAll() throws Exception {
+    public ObservableList<User> getByIds(Set<String> ids) throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);
             List<User> users = new ArrayList<>();
             statement = connect.createStatement();
-            resultSet = statement.executeQuery("select * from users where active=true");
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from users where id in (" + idsWithComma + ")");
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
@@ -152,13 +154,12 @@ public class UsersRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<User> getByIds(Set<String> ids) throws Exception {
+    public ObservableList<User> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);
             List<User> users = new ArrayList<>();
             statement = connect.createStatement();
-            String idsWithComma = String.join(",", ids);
-            resultSet = statement.executeQuery("select * from users where id in (" + idsWithComma + ")");
+            resultSet = statement.executeQuery("select * from users where active=true");
             while (resultSet.next()) {
                 User user = new User();
                 user.setId(resultSet.getLong("id"));
@@ -281,6 +282,26 @@ public class UsersRepository extends BaseRepository {
                     user.setCreatedUser(otherUser);
                 if (user.getUpdatedUserId() == otherUser.getId())
                     user.setUpdatedUser(otherUser);
+            }
+        }
+    }
+
+    public void loadCountries(ObservableList<User> users) throws Exception{
+        if(users.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (User user : users) {
+            set.add("" + user.getCountryId());
+        }
+
+        CountriesRepository cr = new CountriesRepository();
+        ObservableList<Country> countries = cr.getByIds(set);
+
+        for (User user : users) {
+            for (Country country : countries) {
+                if (user.getCountryId() == country.getId())
+                    user.setCountry(country);
             }
         }
     }

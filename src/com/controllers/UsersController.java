@@ -1,12 +1,17 @@
 package com.controllers;
 
 import com.database.UsersRepository;
+import com.models.Country;
 import com.models.User;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -26,6 +31,7 @@ public class UsersController {
             UsersRepository usersRepository = new UsersRepository();
             ObservableList<User> users = usersRepository.getAll();
             usersRepository.loadUsers(users);
+            usersRepository.loadCountries(users);
             usersTable.setItems(users);
             addTableColumns();
         } catch (Exception e) {
@@ -68,9 +74,17 @@ public class UsersController {
         TableColumn<User, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
+        TableColumn<User, Long> tableColumnCountryName = new TableColumn<>("Country");
+        tableColumnCountryName.setCellValueFactory(new PropertyValueFactory<>("country"));
+
+        TableColumn<User, ImageView> tableColumnCountry = new TableColumn<>("Country");
+        tableColumnCountry.setCellValueFactory(cellData -> new SimpleObjectProperty<ImageView>(cellData.getValue().getCountry().getFlagView()));
+
         usersTable.getColumns().addAll(tableColumnId, tableColumnFirstName, tableColumnLastName,
                 tableColumnUsername, tableColumnEmail, tableColumnBirthDate, tableColumnPhoneNumber,
-                tableColumnCreatedAt, tableColumnUpdatedAt, tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedAt, tableColumnUpdatedAt, tableColumnCreatedUserId, tableColumnUpdatedUserId,
+                tableColumnCountryName,
+                tableColumnCountry);
     }
 
 }

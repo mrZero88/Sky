@@ -47,7 +47,7 @@ public class CountriesController {
         tableColumnName.setCellValueFactory(new PropertyValueFactory<>("name"));
 
         TableColumn<Country, String> tableColumnShortcut = new TableColumn<>("Shortcut");
-        tableColumnShortcut.setCellValueFactory(new PropertyValueFactory<>("smallVersion"));
+        tableColumnShortcut.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
         TableColumn<Country, ImageView> tableColumnFlag = new TableColumn<>("Flag");
         tableColumnFlag.setCellValueFactory(new PropertyValueFactory<>("flagView"));

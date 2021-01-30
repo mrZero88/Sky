@@ -85,6 +85,36 @@ public class CountriesRepository extends BaseRepository {
         }
     }
 
+    public ObservableList<Country> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<Country> countries = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from countries where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                Country country = new Country();
+                country.setId(resultSet.getInt("id"));
+                country.setName(resultSet.getString("name"));
+                country.setFlag(resultSet.getBinaryStream("flag"));
+                country.setShortcut(resultSet.getString("shortcut"));
+                country.setContinentId(resultSet.getByte("continent_id"));
+                country.setFileName(resultSet.getString("file_name"));
+                country.setCreatedAt(resultSet.getTimestamp("created_at"));
+                country.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                country.setCreatedUserId(resultSet.getLong("created_user_id"));
+                country.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                country.setActive(resultSet.getBoolean("active"));
+                countries.add(country);
+            }
+            return FXCollections.observableList(countries);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
     public ObservableList<Country> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);

@@ -35,6 +35,7 @@ public class User {
 
     private ObjectProperty<User> createdUser;
     private ObjectProperty<User> updatedUser;
+    private ObjectProperty<Country> country;
 
     public long getId() {
         return id.get();
@@ -324,6 +325,18 @@ public class User {
         return updatedUser;
     }
 
+    public Country getCountry() {
+        return country.get();
+    }
+
+    public void setCountry(Country country) {
+        this.country.set(country);
+    }
+
+    public ObjectProperty<Country> countryProperty() {
+        return country;
+    }
+
     public User() {
         this.id = new SimpleLongProperty(this, "id");
         this.firstName = new SimpleStringProperty(this, "firstName");
@@ -349,6 +362,7 @@ public class User {
         this.active = new SimpleBooleanProperty(this, "active",true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
+        this.country = new SimpleObjectProperty<>(this, "country");
     }
 
     @Override

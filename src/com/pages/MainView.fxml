@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.controllers.MainController">
+<VBox fx:controller="com.controllers.MainController" prefHeight="400.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <MenuBar fx:id="menuBar" VBox.vgrow="NEVER">
          <menus>
@@ -84,6 +84,9 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onProjectStatesClicked" text="Project States" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewProjectStateClicked" text="New Project State" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onRanksClicked" text="Ranks" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewRankClicked" text="New Rank" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

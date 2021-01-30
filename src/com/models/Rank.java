@@ -4,20 +4,21 @@ import javafx.beans.property.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-public class Country {
+public class Rank {
 
     private IntegerProperty id;
-    private StringProperty name;
-    private ObjectProperty<InputStream> flag;
-    private ObjectProperty<ImageView> flagView;
-    private StringProperty shortcut;
-    private IntegerProperty continentId;
-    private StringProperty fileName;
+    private StringProperty title;
+    private IntegerProperty level;
+    private ObjectProperty<InputStream> badge;
+    private ObjectProperty<ImageView> badgeView;
+    private IntegerProperty tasksRequired;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -39,80 +40,69 @@ public class Country {
         return id;
     }
 
-    public String getName() {
-        return name.get();
+    public String getTitle() {
+        return title.get();
     }
 
-    public void setName(String name) {
-        this.name.set(name);
+    public void setTitle(String title) {
+        this.title.set(title);
     }
 
-    public StringProperty nameProperty() {
-        return name;
+    public StringProperty titleProperty() {
+        return title;
     }
 
-    public InputStream getFlag() {
-        return flag.get();
+    public int getLevel() {
+        return level.get();
     }
 
-    public void setFlag(InputStream flag) throws Exception {
-        if (flag != null) {
-            Image image = SwingFXUtils.toFXImage(ImageIO.read(flag), null);
-            flagView.get().setImage(image);
+    public void setLevel(int level) {
+        this.level.set(level);
+    }
+
+    public IntegerProperty levelProperty() {
+        return level;
+    }
+
+    public InputStream getBadge() {
+        return badge.get();
+    }
+
+    public void setBadge(InputStream badge) throws Exception {
+        if (badge != null) {
+            BufferedImage bfimg = ImageIO.read(badge);
+            Image image = SwingFXUtils.toFXImage(bfimg, null);
+            badgeView.get().setImage(image);
         }
-        this.flag.set(flag);
+        this.badge.set(badge);
     }
 
-    public ObjectProperty<InputStream> flagProperty() {
-        return flag;
+    public ObjectProperty<InputStream> badgeProperty() {
+        return badge;
     }
 
-    public ImageView getFlagView() {
-        return flagView.get();
+    public ImageView getBadgeView() {
+        return badgeView.get();
     }
 
-    public void setFlagView(ImageView flagView) {
-        this.flagView.set(flagView);
+    public void setBadgeView(ImageView badgeView) {
+        this.badgeView.set(badgeView);
     }
 
-    public ObjectProperty<ImageView> flagViewProperty() {
-        return flagView;
+    public ObjectProperty<ImageView> badgeViewProperty() {
+        return badgeView;
     }
 
-    public String getShortcut() {
-        return shortcut.get();
+    public int getTasksRequired() {
+        return tasksRequired.get();
     }
 
-    public void setShortcut(String shortcut) {
-        this.shortcut.set(shortcut);
+    public void setTasksRequired(int tasksRequired) {
+        this.tasksRequired.set(tasksRequired);
     }
 
-    public StringProperty shortcutProperty() {
-        return shortcut;
-    }
-
-    public int getContinentId() {
-        return continentId.get();
-    }
-
-    public void setContinentId(int continentId) {
-        this.continentId.set(continentId);
-    }
-
-    public IntegerProperty continentIdProperty() {
-        return continentId;
-    }
-
-    public String getFileName() {
-        return fileName.get();
-    }
-
-    public void setFileName(String fileName) {
-        this.fileName.set(fileName);
-    }
-
-    public StringProperty fileNameProperty() {
-        return name;
+    public IntegerProperty tasksRequiredProperty() {
+        return tasksRequired;
     }
 
     public Timestamp getCreatedAt() {
@@ -199,14 +189,13 @@ public class Country {
         return updatedUser;
     }
 
-    public Country() {
+    public Rank() {
         this.id = new SimpleIntegerProperty(this, "id");
-        this.name = new SimpleStringProperty(this, "name");
-        this.flag = new SimpleObjectProperty<>(this, "flag");
-        this.flagView = new SimpleObjectProperty<>(this, "flagView", new ImageView());
-        this.shortcut = new SimpleStringProperty(this, "shortcut");
-        this.continentId = new SimpleIntegerProperty(this, "continentId",7);
-        this.fileName = new SimpleStringProperty(this, "fileName");
+        this.title = new SimpleStringProperty(this, "title");
+        this.level = new SimpleIntegerProperty(this, "level");
+        this.badge = new SimpleObjectProperty<>(this, "badge");
+        this.badgeView = new SimpleObjectProperty<>(this, "imageView", new ImageView());
+        this.tasksRequired = new SimpleIntegerProperty(this, "tasksRequired");
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
@@ -218,6 +207,6 @@ public class Country {
 
     @Override
     public String toString() {
-        return this.getName();
+        return this.getTitle();
     }
 }

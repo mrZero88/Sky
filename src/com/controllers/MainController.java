@@ -166,4 +166,20 @@ public class MainController {
 
     }
 
+    @FXML
+    public void onRanksClicked() throws Exception {
+        Parent ranksView = FXMLLoader.load(getClass().getResource("../pages/RanksView.fxml"));
+        AnchorPane.setLeftAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(ranksView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(ranksView);
+    }
+
+    @FXML
+    public void onNewRankClicked() {
+        System.out.println("Hello New Rank");
+
+    }
+
 }
