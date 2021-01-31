@@ -45,30 +45,27 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#onProjectsClicked" text="Projects" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewProjectClicked" text="New Project" />
-              </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Features">
-              <items>
+                  <SeparatorMenuItem mnemonicParsing="false" />
                 <MenuItem mnemonicParsing="false" onAction="#onFeaturesClicked" text="Features" />
-                  <MenuItem mnemonicParsing="false" onAction="#onNewFeatureClicked" text="New Feature" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onBugsClicked" text="Bugs" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTasksClicked" text="Tasks" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTeamsClicked" text="Teams" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewTeamClicked" text="New Team" />
               </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Bugs">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onBugsClicked" text="Bugs" />
-                  <MenuItem mnemonicParsing="false" onAction="#onNewBugClicked" text="New Bug" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Customers">
-               <items>
-                  <MenuItem mnemonicParsing="false" onAction="#onCustomersClicked" text="Customers" />
-                  <MenuItem mnemonicParsing="false" onAction="#onNewCustomerClicked" text="New Customer" />
-               </items>
-            </Menu>
-            <Menu mnemonicParsing="false" text="Users">
+            <Menu mnemonicParsing="false" text="RH">
                <items>
                   <MenuItem mnemonicParsing="false" onAction="#onUsersClicked" text="Users" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewUserClicked" text="New User" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onCustomersClicked" text="Customers" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewCustomerClicked" text="New Customer" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onHolidaysClicked" text="Holidays" />
+                  <MenuItem mnemonicParsing="false" onAction="#onSickdaysClicked" text="Sickdays" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Configurations">
@@ -85,8 +82,14 @@
                   <MenuItem mnemonicParsing="false" onAction="#onProjectStatesClicked" text="Project States" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewProjectStateClicked" text="New Project State" />
                   <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onTaskStatesClicked" text="Task States" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewTaskStateClicked" text="New Task State" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onRanksClicked" text="Ranks" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewRankClicked" text="New Rank" />
+                  <SeparatorMenuItem mnemonicParsing="false" />
+                  <MenuItem mnemonicParsing="false" onAction="#onGendersClicked" text="Genders" />
+                  <MenuItem mnemonicParsing="false" onAction="#onNewGenderClicked" text="New Gender" />
                </items>
             </Menu>
             <Menu mnemonicParsing="false" text="Help">

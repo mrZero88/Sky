@@ -182,4 +182,82 @@ public class MainController {
 
     }
 
+    @FXML
+    public void onTasksClicked() throws Exception {
+        Parent ranksView = FXMLLoader.load(getClass().getResource("../pages/TasksView.fxml"));
+        AnchorPane.setLeftAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(ranksView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(ranksView);
+    }
+
+    @FXML
+    public void onTeamsClicked() throws Exception {
+        Parent ranksView = FXMLLoader.load(getClass().getResource("../pages/TeamsView.fxml"));
+        AnchorPane.setLeftAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(ranksView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(ranksView);
+    }
+
+    @FXML
+    public void onNewTeamClicked() {
+        System.out.println("Hello New Rank");
+
+    }
+
+    @FXML
+    public void onHolidaysClicked() throws Exception {
+        Parent ranksView = FXMLLoader.load(getClass().getResource("../pages/HolidaysView.fxml"));
+        AnchorPane.setLeftAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(ranksView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(ranksView);
+    }
+
+    @FXML
+    public void onSickdaysClicked() throws Exception {
+        Parent ranksView = FXMLLoader.load(getClass().getResource("../pages/SickdaysView.fxml"));
+        AnchorPane.setLeftAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(ranksView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(ranksView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(ranksView);
+    }
+
+    @FXML
+    public void onTaskStatesClicked() throws Exception {
+        Parent projectStatesView = FXMLLoader.load(getClass().getResource("../pages/TaskStatesView.fxml"));
+        AnchorPane.setLeftAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(projectStatesView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(projectStatesView);
+    }
+
+    @FXML
+    public void onNewTaskStateClicked() {
+        System.out.println("Hello New User");
+
+    }
+
+    @FXML
+    public void onGendersClicked() throws Exception {
+        Parent projectStatesView = FXMLLoader.load(getClass().getResource("../pages/GendersView.fxml"));
+        AnchorPane.setLeftAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(projectStatesView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(projectStatesView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(projectStatesView);
+    }
+
+    @FXML
+    public void onNewGenderClicked() {
+        System.out.println("Hello New User");
+
+    }
+
 }
