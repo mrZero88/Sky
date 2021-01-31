@@ -1,7 +1,11 @@
 package com.models;
 
 import javafx.beans.property.*;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
+import javax.imageio.ImageIO;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Date;
@@ -21,6 +25,7 @@ public class User {
     private BooleanProperty isSuperUser;
     private IntegerProperty countryId;
     private ObjectProperty<InputStream> picture;
+    private ObjectProperty<ImageView> pictureView;
     private ObjectProperty<Date> birthDate;
     private StringProperty adress;
     private StringProperty postalCode;
@@ -161,12 +166,30 @@ public class User {
         return picture.get();
     }
 
-    public void setPicture(InputStream picture) {
+    public void setPicture(InputStream picture) throws Exception{
+        if (picture != null) {
+            Image image = SwingFXUtils.toFXImage(ImageIO.read(picture), null);
+            pictureView.get().setImage(image);
+            pictureView.get().setFitWidth(32);
+            pictureView.get().setFitHeight(32);
+        }
         this.picture.set(picture);
     }
 
     public ObjectProperty<InputStream> pictureProperty() {
         return picture;
+    }
+
+    public ImageView getPictureView() {
+        return pictureView.get();
+    }
+
+    public void setPictureView(ImageView pictureView) {
+        this.pictureView.set(pictureView);
+    }
+
+    public ObjectProperty<ImageView> pictureViewProperty() {
+        return pictureView;
     }
 
     public Date getBirthDate() {
@@ -349,6 +372,7 @@ public class User {
         this.isSuperUser = new SimpleBooleanProperty(this, "isSuperUser",false);
         this.countryId = new SimpleIntegerProperty(this, "countryId",1);
         this.picture = new SimpleObjectProperty<>(this, "picture");
+        this.pictureView = new SimpleObjectProperty<>(this, "pictureView", new ImageView());
         this.birthDate = new SimpleObjectProperty<>(this, "birthDate");
         this.adress = new SimpleStringProperty(this, "adress");
         this.postalCode = new SimpleStringProperty(this, "postalCode");

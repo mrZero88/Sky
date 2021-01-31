@@ -9,8 +9,12 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 public class ProjectStatesController {
 
@@ -25,6 +29,31 @@ public class ProjectStatesController {
     public void initialize() {
         try {
             ProjectStatesRepository projectStatesRepository = new ProjectStatesRepository();
+
+            /*int i = 1;
+            File dir = new File("/Users/danielcorreia/IdeaProjects/Flyzerosky/src/com/images/ProjectStates/");
+            File[] directoryListing = dir.listFiles();
+            if (directoryListing != null) {
+                for (var child : Arrays.stream(directoryListing).sorted().toArray()) {
+                    File file = (File) child;
+
+                    if(file.getName().equals(".DS_Store"))
+                        continue;
+
+                    FileInputStream fis = new FileInputStream(file);
+
+                    ProjectState ps = projectStatesRepository.getById(i);
+                    ps.setState(fis);
+                    projectStatesRepository.update(ps);
+                    i++;
+                }
+            } else {
+                // Handle the case where dir is not really a directory.
+                // Checking dir.isDirectory() above would not be sufficient
+                // to avoid race conditions with another process that deletes
+                // directories.
+            }*/
+
             ObservableList<ProjectState> projectStates = projectStatesRepository.getAll();
             projectStatesRepository.loadUsers(projectStates);
             projectStatesTable.setItems(projectStates);
@@ -42,6 +71,9 @@ public class ProjectStatesController {
         TableColumn<ProjectState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
+        TableColumn<ProjectState, ImageView> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+
         TableColumn<ProjectState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
@@ -54,7 +86,7 @@ public class ProjectStatesController {
         TableColumn<ProjectState, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
-        projectStatesTable.getColumns().addAll(tableColumnId, tableColumnTitle,
+        projectStatesTable.getColumns().addAll(tableColumnId, tableColumnTitle, tableColumnState,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
                 tableColumnCreatedUserId, tableColumnUpdatedUserId);
     }

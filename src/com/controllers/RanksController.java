@@ -30,39 +30,6 @@ public class RanksController {
     public void initialize() {
         try {
             RanksRepository ranksRepository = new RanksRepository();
-
-            /*List<Rank> ranks = new ArrayList<>();
-            File dir = new File("/Users/danielcorreia/IdeaProjects/Flyzerosky/src/com/images/RankIcons/");
-            File[] directoryListing = dir.listFiles();
-            if (directoryListing != null) {
-                for (var child : Arrays.stream(directoryListing).sorted().toArray()) {
-                    File file = (File) child;
-
-                    if(file.getName().equals(".DS_Store"))
-                        continue;
-
-                    FileInputStream fis = new FileInputStream(file);
-
-                    Rank rank = new Rank();
-                    rank.setTitle(file.getName());
-                    rank.setLevel(1);
-                    rank.setBadge(fis);
-                    rank.setTasksRequired(1);
-
-                    ranks.add(rank);
-                    ranksRepository.insert(rank);
-
-                }
-            } else {
-                // Handle the case where dir is not really a directory.
-                // Checking dir.isDirectory() above would not be sufficient
-                // to avoid race conditions with another process that deletes
-                // directories.
-            }*/
-
-
-
-
             ObservableList<Rank> ranks = ranksRepository.getAll();
             ranksRepository.loadUsers(ranks);
             ranksTable.setItems(ranks);

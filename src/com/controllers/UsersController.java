@@ -1,20 +1,20 @@
 package com.controllers;
 
 import com.database.UsersRepository;
-import com.models.Country;
 import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Arrays;
 
 public class UsersController {
 
@@ -43,6 +43,9 @@ public class UsersController {
     private void addTableColumns() {
         TableColumn<User, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<User, ImageView> tableColumnPicture = new TableColumn<>("Picture");
+        tableColumnPicture.setCellValueFactory(new PropertyValueFactory<>("pictureView"));
 
         TableColumn<User, String> tableColumnFirstName = new TableColumn<>("First Name");
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -78,9 +81,10 @@ public class UsersController {
         tableColumnCountryName.setCellValueFactory(new PropertyValueFactory<>("country"));
 
         TableColumn<User, ImageView> tableColumnCountry = new TableColumn<>("Country");
-        tableColumnCountry.setCellValueFactory(cellData -> new SimpleObjectProperty<ImageView>(cellData.getValue().getCountry().getFlagView()));
+        tableColumnCountry.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCountry().getFlagView()));
 
-        usersTable.getColumns().addAll(tableColumnId, tableColumnFirstName, tableColumnLastName,
+        usersTable.getColumns().addAll(tableColumnId, tableColumnPicture, tableColumnFirstName, tableColumnLastName,
                 tableColumnUsername, tableColumnEmail, tableColumnBirthDate, tableColumnPhoneNumber,
                 tableColumnCreatedAt, tableColumnUpdatedAt, tableColumnCreatedUserId, tableColumnUpdatedUserId,
                 tableColumnCountryName,
