@@ -1,15 +1,20 @@
 package com.models;
 
 import javafx.beans.property.*;
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javax.imageio.ImageIO;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-public class Feature {
+public class FeatureState {
 
-    private LongProperty id;
+    private IntegerProperty id;
     private StringProperty title;
-    private StringProperty description;
-    private LongProperty projectId;
+    private ObjectProperty<InputStream> state;
+    private ObjectProperty<ImageView> stateView;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -19,15 +24,15 @@ public class Feature {
     private ObjectProperty<User> createdUser;
     private ObjectProperty<User> updatedUser;
 
-    public long getId() {
+    public int getId() {
         return id.get();
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id.set(id);
     }
 
-    public LongProperty idProperty() {
+    public IntegerProperty idProperty() {
         return id;
     }
 
@@ -43,28 +48,32 @@ public class Feature {
         return title;
     }
 
-    public String getDescription() {
-        return description.get();
+    public InputStream getState() {
+        return state.get();
     }
 
-    public void setDescription(String description) {
-        this.description.set(description);
+    public void setState(InputStream state) throws Exception {
+        if (state != null) {
+            Image image = SwingFXUtils.toFXImage(ImageIO.read(state), null);
+            stateView.get().setImage(image);
+        }
+        this.state.set(state);
     }
 
-    public StringProperty descriptionProperty() {
-        return description;
+    public ObjectProperty<InputStream> stateProperty() {
+        return state;
     }
 
-    public long getProjectId() {
-        return projectId.get();
+    public ImageView getStateView() {
+        return stateView.get();
     }
 
-    public void setProjectId(long projectId) {
-        this.projectId.set(projectId);
+    public void setStateView(ImageView stateView) {
+        this.stateView.set(stateView);
     }
 
-    public LongProperty projectIdProperty() {
-        return projectId;
+    public ObjectProperty<ImageView> stateViewProperty() {
+        return stateView;
     }
 
     public Timestamp getCreatedAt() {
@@ -151,11 +160,11 @@ public class Feature {
         return updatedUser;
     }
 
-    public Feature() {
-        this.id = new SimpleLongProperty(this, "id");
+    public FeatureState() {
+        this.id = new SimpleIntegerProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
-        this.description = new SimpleStringProperty(this, "description");
-        this.projectId = new SimpleLongProperty(this, "projectId");
+        this.state = new SimpleObjectProperty<>(this, "state");
+        this.stateView = new SimpleObjectProperty<>(this, "stateView", new ImageView());
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
