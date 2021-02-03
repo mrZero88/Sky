@@ -70,6 +70,21 @@
             </Menu>
             <Menu mnemonicParsing="false" text="Configurations">
                <items>
+                  <Menu mnemonicParsing="false" text="States">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#onProjectStatesClicked" text="Project States" />
+                        <MenuItem mnemonicParsing="false" onAction="#onNewProjectStateClicked" text="New Project State" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onTaskStatesClicked" text="Task States" />
+                        <MenuItem mnemonicParsing="false" onAction="#onNewTaskStateClicked" text="New Task State" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onFeatureStatesClicked" text="Feature States" />
+                        <MenuItem mnemonicParsing="false" onAction="#onNewFeatureStateClicked" text="New Feature State" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#onBugStatesClicked" text="Bug States" />
+                        <MenuItem mnemonicParsing="false" onAction="#onNewBugStateClicked" text="New Bug State" />
+                     </items>
+                  </Menu>
                   <MenuItem mnemonicParsing="false" onAction="#onCountriesClicked" text="Countries" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewCountryClicked" text="New Country" />
                   <SeparatorMenuItem mnemonicParsing="false" />
@@ -78,12 +93,6 @@
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onTechnologiesClicked" text="Technologies" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewTechnologyClicked" text="New Technology" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#onProjectStatesClicked" text="Project States" />
-                  <MenuItem mnemonicParsing="false" onAction="#onNewProjectStateClicked" text="New Project State" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#onTaskStatesClicked" text="Task States" />
-                  <MenuItem mnemonicParsing="false" onAction="#onNewTaskStateClicked" text="New Task State" />
                   <SeparatorMenuItem mnemonicParsing="false" />
                   <MenuItem mnemonicParsing="false" onAction="#onRanksClicked" text="Ranks" />
                   <MenuItem mnemonicParsing="false" onAction="#onNewRankClicked" text="New Rank" />

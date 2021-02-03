@@ -260,4 +260,36 @@ public class MainController {
 
     }
 
+    @FXML
+    public void onFeatureStatesClicked() throws Exception {
+        Parent featureStatesView = FXMLLoader.load(getClass().getResource("../pages/FeatureStatesView.fxml"));
+        AnchorPane.setLeftAnchor(featureStatesView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(featureStatesView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(featureStatesView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(featureStatesView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(featureStatesView);
+    }
+
+    @FXML
+    public void onNewFeatureStateClicked() {
+        System.out.println("Hello New User");
+
+    }
+
+    @FXML
+    public void onBugStatesClicked() throws Exception {
+        Parent bugStatesView = FXMLLoader.load(getClass().getResource("../pages/BugStatesView.fxml"));
+        AnchorPane.setLeftAnchor(bugStatesView, VIEW_MARGIN);
+        AnchorPane.setTopAnchor(bugStatesView, VIEW_MARGIN);
+        AnchorPane.setRightAnchor(bugStatesView, VIEW_MARGIN);
+        AnchorPane.setBottomAnchor(bugStatesView, VIEW_MARGIN);
+        rootAnchor.getChildren().add(bugStatesView);
+    }
+
+    @FXML
+    public void onNewBugStateClicked() {
+        System.out.println("Hello New User");
+
+    }
+
 }
