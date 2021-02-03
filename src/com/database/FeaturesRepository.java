@@ -29,18 +29,20 @@ public class FeaturesRepository extends BaseRepository {
                             "(title, " +
                             "description, " +
                             "project_id, " +
+                            "state_id, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, feature.getTitle());
             preparedStatement.setString(2, feature.getDescription());
             preparedStatement.setLong(3, feature.getProjectId());
-            preparedStatement.setTimestamp(4, feature.getCreatedAt());
-            preparedStatement.setTimestamp(5, feature.getUpdatedAt());
-            preparedStatement.setLong(6, feature.getCreatedUserId());
-            preparedStatement.setLong(7, feature.getUpdatedUserId());
+            preparedStatement.setInt(4, feature.getStateId());
+            preparedStatement.setTimestamp(5, feature.getCreatedAt());
+            preparedStatement.setTimestamp(6, feature.getUpdatedAt());
+            preparedStatement.setLong(7, feature.getCreatedUserId());
+            preparedStatement.setLong(8, feature.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from features order by id desc limit 1");
@@ -66,6 +68,7 @@ public class FeaturesRepository extends BaseRepository {
             feature.setTitle(resultSet.getString("title"));
             feature.setDescription(resultSet.getString("description"));
             feature.setProjectId(resultSet.getLong("project_id"));
+            feature.setStateId(resultSet.getInt("state_id"));
             feature.setCreatedAt(resultSet.getTimestamp("created_at"));
             feature.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             feature.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -91,6 +94,7 @@ public class FeaturesRepository extends BaseRepository {
                 feature.setTitle(resultSet.getString("title"));
                 feature.setDescription(resultSet.getString("description"));
                 feature.setProjectId(resultSet.getLong("project_id"));
+                feature.setStateId(resultSet.getInt("state_id"));
                 feature.setCreatedAt(resultSet.getTimestamp("created_at"));
                 feature.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 feature.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -114,15 +118,17 @@ public class FeaturesRepository extends BaseRepository {
                     "update features set title = ?," +
                             " description = ?," +
                             " project_id = ?, " +
+                            " state_id = ?, " +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
             preparedStatement.setString(1, feature.getTitle());
             preparedStatement.setString(2, feature.getDescription());
             preparedStatement.setLong(3, feature.getProjectId());
-            preparedStatement.setTimestamp(4, feature.getUpdatedAt());
-            preparedStatement.setLong(5, feature.getUpdatedUserId());
-            preparedStatement.setLong(6, feature.getId());
+            preparedStatement.setInt(4, feature.getStateId());
+            preparedStatement.setTimestamp(5, feature.getUpdatedAt());
+            preparedStatement.setLong(6, feature.getUpdatedUserId());
+            preparedStatement.setLong(7, feature.getId());
             preparedStatement.executeUpdate();
             return feature;
         } catch (Exception e) {

@@ -11,6 +11,7 @@ public class Bug {
     private StringProperty title;
     private StringProperty description;
     private LongProperty projectId;
+    private IntegerProperty stateId;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -66,6 +67,18 @@ public class Bug {
 
     public LongProperty projectIdProperty() {
         return projectId;
+    }
+
+    public int getStateId() {
+        return stateId.get();
+    }
+
+    public void setStateId(int stateId) {
+        this.stateId.set(stateId);
+    }
+
+    public IntegerProperty stateIdProperty() {
+        return stateId;
     }
 
     public Timestamp getCreatedAt() {
@@ -157,6 +170,7 @@ public class Bug {
         this.title = new SimpleStringProperty(this, "title");
         this.description = new SimpleStringProperty(this, "description");
         this.projectId = new SimpleLongProperty(this, "projectId");
+        this.stateId = new SimpleIntegerProperty(this, "stateId", 1);
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);

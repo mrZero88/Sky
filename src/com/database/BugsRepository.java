@@ -27,18 +27,20 @@ public class BugsRepository extends BaseRepository {
                             "(title, " +
                             "description, " +
                             "project_id, " +
+                            "state_id, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, bug.getTitle());
             preparedStatement.setString(2, bug.getDescription());
             preparedStatement.setLong(3, bug.getProjectId());
-            preparedStatement.setTimestamp(4, bug.getCreatedAt());
-            preparedStatement.setTimestamp(5, bug.getUpdatedAt());
-            preparedStatement.setLong(6, bug.getCreatedUserId());
-            preparedStatement.setLong(7, bug.getUpdatedUserId());
+            preparedStatement.setLong(4, bug.getStateId());
+            preparedStatement.setTimestamp(5, bug.getCreatedAt());
+            preparedStatement.setTimestamp(6, bug.getUpdatedAt());
+            preparedStatement.setLong(7, bug.getCreatedUserId());
+            preparedStatement.setLong(8, bug.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from bugs order by id desc limit 1");
@@ -64,6 +66,7 @@ public class BugsRepository extends BaseRepository {
             bug.setTitle(resultSet.getString("title"));
             bug.setDescription(resultSet.getString("description"));
             bug.setProjectId(resultSet.getLong("project_id"));
+            bug.setStateId(resultSet.getInt("state_id"));
             bug.setCreatedAt(resultSet.getTimestamp("created_at"));
             bug.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             bug.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -89,6 +92,7 @@ public class BugsRepository extends BaseRepository {
                 bug.setTitle(resultSet.getString("title"));
                 bug.setDescription(resultSet.getString("description"));
                 bug.setProjectId(resultSet.getLong("project_id"));
+                bug.setStateId(resultSet.getInt("state_id"));
                 bug.setCreatedAt(resultSet.getTimestamp("created_at"));
                 bug.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 bug.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -112,15 +116,17 @@ public class BugsRepository extends BaseRepository {
                     "update bugs set title = ?," +
                             " description = ?," +
                             " project_id = ?, " +
+                            " state_id = ?, " +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
             preparedStatement.setString(1, bug.getTitle());
             preparedStatement.setString(2, bug.getDescription());
             preparedStatement.setLong(3, bug.getProjectId());
-            preparedStatement.setTimestamp(4, bug.getUpdatedAt());
-            preparedStatement.setLong(5, bug.getUpdatedUserId());
-            preparedStatement.setLong(6, bug.getId());
+            preparedStatement.setInt(4, bug.getStateId());
+            preparedStatement.setTimestamp(5, bug.getUpdatedAt());
+            preparedStatement.setLong(6, bug.getUpdatedUserId());
+            preparedStatement.setLong(7, bug.getId());
             preparedStatement.executeUpdate();
             return bug;
         } catch (Exception e) {
