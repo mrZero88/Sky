@@ -1,10 +1,10 @@
 package com.database;
 
 import com.models.Bug;
+import com.models.BugState;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -153,7 +153,7 @@ public class BugsRepository extends BaseRepository {
     }
 
     public void loadUsers(ObservableList<Bug> bugs) throws Exception {
-        if(bugs.isEmpty())
+        if (bugs.isEmpty())
             return;
 
         Set<String> set = new HashSet<>();
@@ -173,6 +173,30 @@ public class BugsRepository extends BaseRepository {
                     bug.setUpdatedUser(user);
             }
         }
+    }
+
+    public void loadStates(ObservableList<Bug> bugs) throws Exception {
+        if (bugs.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Bug bug : bugs) {
+            set.add("" + bug.getStateId());
+        }
+
+        BugStatesRepository bsr = new BugStatesRepository();
+        ObservableList<BugState> bugStates = bsr.getByIds(set);
+
+        for (Bug bug : bugs) {
+            for (BugState bugState : bugStates) {
+                if (bug.getStateId() == bugState.getId())
+                    bug.setState(new BugState(bugState));
+            }
+        }
+
+        /*for (Bug bug : bugs) {
+            bug.setState(bsr.getById(bug.getStateId()));
+        }*/
     }
 
     protected void closeConnections() throws Exception {

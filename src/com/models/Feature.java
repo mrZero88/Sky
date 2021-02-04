@@ -19,6 +19,7 @@ public class Feature {
 
     private ObjectProperty<User> createdUser;
     private ObjectProperty<User> updatedUser;
+    private ObjectProperty<FeatureState> state;
 
     public long getId() {
         return id.get();
@@ -164,6 +165,18 @@ public class Feature {
         return updatedUser;
     }
 
+    public FeatureState getState() {
+        return state.get();
+    }
+
+    public void setState(FeatureState state) {
+        this.state.set(state);
+    }
+
+    public ObjectProperty<FeatureState> stateProperty() {
+        return state;
+    }
+
     public Feature() {
         this.id = new SimpleLongProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
@@ -177,6 +190,7 @@ public class Feature {
         this.active = new SimpleBooleanProperty(this, "active", true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
+        this.state = new SimpleObjectProperty<>(this, "state");
     }
 
     @Override

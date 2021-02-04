@@ -4,6 +4,7 @@ import javafx.beans.property.*;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+
 import javax.imageio.ImageIO;
 import java.io.InputStream;
 import java.sql.Timestamp;
@@ -172,6 +173,20 @@ public class BugState {
         this.active = new SimpleBooleanProperty(this, "active", true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
+    }
+
+    public BugState(BugState bugState) throws Exception{
+        this.id = bugState.id;
+        this.title = bugState.title;
+        this.state = bugState.state;
+        this.stateView = new SimpleObjectProperty<>(this, "stateView", new ImageView(new Image(this.state.get())));
+        this.createdAt = bugState.createdAt;
+        this.updatedAt = bugState.updatedAt;
+        this.createdUserId = bugState.createdUserId;
+        this.updatedUserId = bugState.updatedUserId;
+        this.active = bugState.active;
+        this.createdUser = bugState.createdUser;
+        this.updatedUser = bugState.updatedUser;
     }
 
     @Override

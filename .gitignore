@@ -2,3 +2,4 @@
 **/.idea
 **/images
 .DS_Store
+src/com/config.properties

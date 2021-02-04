@@ -4,11 +4,13 @@ import com.database.BugsRepository;
 import com.database.FeaturesRepository;
 import com.models.Bug;
 import com.models.Feature;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 
 import java.sql.Timestamp;
 
@@ -27,6 +29,7 @@ public class FeaturesController {
             FeaturesRepository featuresRepository = new FeaturesRepository();
             ObservableList<Feature> features = featuresRepository.getAll();
             featuresRepository.loadUsers(features);
+            featuresRepository.loadStates(features);
             featuresTable.setItems(features);
             addTableColumns();
         } catch (Exception e) {
@@ -38,6 +41,10 @@ public class FeaturesController {
     private void addTableColumns() {
         TableColumn<Feature, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Feature, ImageView> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
 
         TableColumn<Feature, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -57,7 +64,7 @@ public class FeaturesController {
         TableColumn<Feature, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
-        featuresTable.getColumns().addAll(tableColumnId, tableColumnTitle,
+        featuresTable.getColumns().addAll(tableColumnId, tableColumnState, tableColumnTitle,
                 tableColumnProjectId, tableColumnCreatedAt, tableColumnUpdatedAt,
                 tableColumnCreatedUserId, tableColumnUpdatedUserId);
     }

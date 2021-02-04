@@ -1,6 +1,7 @@
 package com.database;
 
 import com.models.BugState;
+import com.models.Feature;
 import com.models.FeatureState;
 import com.models.User;
 import javafx.collections.FXCollections;
@@ -75,6 +76,33 @@ public class FeatureStatesRepository extends BaseRepository {
         }
     }
 
+    public ObservableList<FeatureState> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<FeatureState> featureStates = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from feature_states where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                FeatureState featureState = new FeatureState();
+                featureState.setId(resultSet.getInt("id"));
+                featureState.setTitle(resultSet.getString("title"));
+                featureState.setState(resultSet.getBinaryStream("state"));
+                featureState.setCreatedAt(resultSet.getTimestamp("created_at"));
+                featureState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                featureState.setCreatedUserId(resultSet.getLong("created_user_id"));
+                featureState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                featureState.setActive(resultSet.getBoolean("active"));
+                featureStates.add(featureState);
+            }
+            return FXCollections.observableList(featureStates);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
     public ObservableList<FeatureState> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);
@@ -142,7 +170,7 @@ public class FeatureStatesRepository extends BaseRepository {
     }
 
     public void loadUsers(ObservableList<FeatureState> featureStates) throws Exception {
-        if(featureStates.isEmpty())
+        if (featureStates.isEmpty())
             return;
 
         Set<String> set = new HashSet<>();

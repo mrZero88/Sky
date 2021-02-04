@@ -20,6 +20,7 @@ public class Bug {
 
     private ObjectProperty<User> createdUser;
     private ObjectProperty<User> updatedUser;
+    private ObjectProperty<BugState> state;
 
     public long getId() {
         return id.get();
@@ -165,6 +166,18 @@ public class Bug {
         return updatedUser;
     }
 
+    public BugState getState() {
+        return state.get();
+    }
+
+    public void setState(BugState state) {
+        this.state.set(state);
+    }
+
+    public ObjectProperty<BugState> stateProperty() {
+        return state;
+    }
+
     public Bug() {
         this.id = new SimpleLongProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
@@ -178,6 +191,7 @@ public class Bug {
         this.active = new SimpleBooleanProperty(this, "active", true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
+        this.state = new SimpleObjectProperty<>(this, "state");
     }
 
     @Override

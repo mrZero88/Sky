@@ -76,6 +76,33 @@ public class BugStatesRepository extends BaseRepository {
         }
     }
 
+    public ObservableList<BugState> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<BugState> bugStates = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from bug_states where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                BugState bugState = new BugState();
+                bugState.setId(resultSet.getInt("id"));
+                bugState.setTitle(resultSet.getString("title"));
+                bugState.setState(resultSet.getBinaryStream("state"));
+                bugState.setCreatedAt(resultSet.getTimestamp("created_at"));
+                bugState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                bugState.setCreatedUserId(resultSet.getLong("created_user_id"));
+                bugState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                bugState.setActive(resultSet.getBoolean("active"));
+                bugStates.add(bugState);
+            }
+            return FXCollections.observableList(bugStates);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
     public ObservableList<BugState> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);

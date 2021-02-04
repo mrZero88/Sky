@@ -2,11 +2,15 @@ package com.controllers;
 
 import com.database.BugsRepository;
 import com.models.Bug;
+import com.models.User;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+
 import java.sql.Timestamp;
 
 public class BugsController {
@@ -24,6 +28,7 @@ public class BugsController {
             BugsRepository bugsRepository = new BugsRepository();
             ObservableList<Bug> bugs = bugsRepository.getAll();
             bugsRepository.loadUsers(bugs);
+            bugsRepository.loadStates(bugs);
             bugsTable.setItems(bugs);
             addTableColumns();
         } catch (Exception e) {
@@ -35,6 +40,14 @@ public class BugsController {
     private void addTableColumns() {
         TableColumn<Bug, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
+
+        TableColumn<Bug, ImageView> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
+
+        TableColumn<Bug, String> tableColumnStateDescription = new TableColumn<>("State");
+        tableColumnStateDescription.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getState().getTitle()));
 
         TableColumn<Bug, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -54,7 +67,7 @@ public class BugsController {
         TableColumn<Bug, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
-        bugsTable.getColumns().addAll(tableColumnId, tableColumnTitle,
+        bugsTable.getColumns().addAll(tableColumnId, tableColumnState, tableColumnStateDescription, tableColumnTitle,
                 tableColumnProjectId, tableColumnCreatedAt, tableColumnUpdatedAt,
                 tableColumnCreatedUserId, tableColumnUpdatedUserId);
     }

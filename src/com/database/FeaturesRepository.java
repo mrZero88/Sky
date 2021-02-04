@@ -1,9 +1,6 @@
 package com.database;
 
-import com.models.Bug;
-import com.models.Feature;
-import com.models.FeatureState;
-import com.models.User;
+import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -155,7 +152,7 @@ public class FeaturesRepository extends BaseRepository {
     }
 
     public void loadUsers(ObservableList<Feature> features) throws Exception {
-        if(features.isEmpty())
+        if (features.isEmpty())
             return;
 
         Set<String> set = new HashSet<>();
@@ -173,6 +170,26 @@ public class FeaturesRepository extends BaseRepository {
                     feature.setCreatedUser(user);
                 if (feature.getUpdatedUserId() == user.getId())
                     feature.setUpdatedUser(user);
+            }
+        }
+    }
+
+    public void loadStates(ObservableList<Feature> features) throws Exception {
+        if (features.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Feature feature : features) {
+            set.add("" + feature.getStateId());
+        }
+
+        FeatureStatesRepository fsr = new FeatureStatesRepository();
+        ObservableList<FeatureState> featureStates = fsr.getByIds(set);
+
+        for (Feature feature : features) {
+            for (FeatureState featureState : featureStates) {
+                if (feature.getStateId() == featureState.getId())
+                    feature.setState(featureState);
             }
         }
     }
