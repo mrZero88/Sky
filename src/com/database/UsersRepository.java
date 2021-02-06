@@ -352,23 +352,36 @@ public class UsersRepository extends BaseRepository {
         }
     }
 
-    public void loadCountries(ObservableList<User> users) throws Exception{
-        if(users.isEmpty())
-            return;
+    public ObservableList<User> loadCountries(ObservableList<User> users) throws Exception {
+        if (users.isEmpty())
+            return users;
 
-        Set<String> set = new HashSet<>();
-        for (User user : users) {
-            set.add("" + user.getCountryId());
-        }
-
-        CountriesRepository cr = new CountriesRepository();
-        ObservableList<Country> countries = cr.getByIds(set);
-
-        for (User user : users) {
-            for (Country country : countries) {
-                if (user.getCountryId() == country.getId())
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (User user : users) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from countries where active=true and id=" + user.getCountryId());
+                while (resultSet.next()) {
+                    Country country = new Country();
+                    country.setId(resultSet.getInt("id"));
+                    country.setName(resultSet.getString("name"));
+                    country.setFlag(resultSet.getBinaryStream("flag"));
+                    country.setShortcut(resultSet.getString("shortcut"));
+                    country.setContinentId(resultSet.getByte("continent_id"));
+                    country.setFileName(resultSet.getString("file_name"));
+                    country.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    country.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    country.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    country.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    country.setActive(resultSet.getBoolean("active"));
                     user.setCountry(country);
+                }
             }
+            return users;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 }
