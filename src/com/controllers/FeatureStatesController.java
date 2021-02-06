@@ -4,6 +4,8 @@ import com.database.BugStatesRepository;
 import com.database.FeatureStatesRepository;
 import com.models.BugState;
 import com.models.FeatureState;
+import com.models.Technology;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -38,30 +40,32 @@ public class FeatureStatesController {
     }
 
     private void addTableColumns() {
-        TableColumn<BugState, Long> tableColumnId = new TableColumn<>("Id");
+        TableColumn<FeatureState, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<BugState, String> tableColumnTitle = new TableColumn<>("Title");
+        TableColumn<FeatureState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<BugState, ImageView> tableColumnState = new TableColumn<>("State");
+        TableColumn<FeatureState, ImageView> tableColumnState = new TableColumn<>("State");
         tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
 
-        TableColumn<BugState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
+        TableColumn<FeatureState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
-        TableColumn<BugState, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
+        TableColumn<FeatureState, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<BugState, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<FeatureState, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<BugState, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<FeatureState, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         featureStatesTable.getColumns().addAll(tableColumnId, tableColumnTitle, tableColumnState,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }

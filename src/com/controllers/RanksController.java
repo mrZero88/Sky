@@ -2,6 +2,8 @@ package com.controllers;
 
 import com.database.RanksRepository;
 import com.models.Rank;
+import com.models.Technology;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -63,16 +65,18 @@ public class RanksController {
         TableColumn<Rank, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<Rank, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<Rank, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<Rank, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<Rank, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         ranksTable.getColumns().addAll(tableColumnId, tableColumnTitle,
                 tableColumnLevel, tableColumnImage, tableColumnTasksRequired,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }

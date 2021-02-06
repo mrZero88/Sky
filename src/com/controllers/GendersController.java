@@ -3,6 +3,8 @@ package com.controllers;
 import com.database.GendersRepository;
 import com.database.ProjectStatesRepository;
 import com.models.Gender;
+import com.models.Technology;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -59,16 +61,18 @@ public class GendersController {
         TableColumn<Gender, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<Gender, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<Gender, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<Gender, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<Gender, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         gendersTable.getColumns().addAll(tableColumnId, tableColumnName,
                 tableColumnShortcut, tableColumnGender,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }

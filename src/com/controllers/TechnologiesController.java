@@ -3,11 +3,15 @@ package com.controllers;
 import com.database.TechnologiesRepository;
 import com.models.Bug;
 import com.models.Technology;
+import com.models.User;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
+
 import java.sql.Timestamp;
 
 public class TechnologiesController {
@@ -47,15 +51,17 @@ public class TechnologiesController {
         TableColumn<Technology, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<Technology, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<Technology, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<Technology, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<Technology, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         technologiesTable.getColumns().addAll(tableColumnId, tableColumnName,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }

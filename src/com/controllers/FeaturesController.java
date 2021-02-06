@@ -2,6 +2,7 @@ package com.controllers;
 
 import com.database.FeaturesRepository;
 import com.models.Feature;
+import com.models.Technology;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -57,15 +58,17 @@ public class FeaturesController {
         TableColumn<Feature, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<Feature, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<Feature, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<Feature, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<Feature, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         featuresTable.getColumns().addAll(tableColumnId, tableColumnState, tableColumnTitle,
                 tableColumnProjectId, tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }

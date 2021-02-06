@@ -1,6 +1,7 @@
 package com.controllers;
 
 import com.database.UsersRepository;
+import com.models.Technology;
 import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -68,11 +69,13 @@ public class UsersController {
         TableColumn<User, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<User, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<User, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<User, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<User, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         TableColumn<User, Long> tableColumnCountryName = new TableColumn<>("Country");
         tableColumnCountryName.setCellValueFactory(new PropertyValueFactory<>("country"));
@@ -83,7 +86,7 @@ public class UsersController {
 
         usersTable.getColumns().addAll(tableColumnId, tableColumnPicture, tableColumnFirstName, tableColumnLastName,
                 tableColumnUsername, tableColumnEmail, tableColumnBirthDate, tableColumnPhoneNumber,
-                tableColumnCreatedAt, tableColumnUpdatedAt, tableColumnCreatedUserId, tableColumnUpdatedUserId,
+                tableColumnCreatedAt, tableColumnUpdatedAt, tableColumnCreatedUser, tableColumnUpdatedUser,
                 tableColumnCountryName,
                 tableColumnCountry);
     }

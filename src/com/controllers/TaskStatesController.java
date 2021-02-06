@@ -4,6 +4,8 @@ import com.database.ProjectStatesRepository;
 import com.database.TaskStatesRepository;
 import com.models.ProjectState;
 import com.models.TaskState;
+import com.models.Technology;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -63,30 +65,32 @@ public class TaskStatesController {
     }
 
     private void addTableColumns() {
-        TableColumn<ProjectState, Long> tableColumnId = new TableColumn<>("Id");
+        TableColumn<TaskState, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<ProjectState, String> tableColumnTitle = new TableColumn<>("Title");
+        TableColumn<TaskState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<ProjectState, ImageView> tableColumnState = new TableColumn<>("State");
+        TableColumn<TaskState, ImageView> tableColumnState = new TableColumn<>("State");
         tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
 
-        TableColumn<ProjectState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
+        TableColumn<TaskState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));
 
-        TableColumn<ProjectState, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
+        TableColumn<TaskState, Timestamp> tableColumnUpdatedAt = new TableColumn<>("Updated At");
         tableColumnUpdatedAt.setCellValueFactory(new PropertyValueFactory<>("updatedAt"));
 
-        TableColumn<ProjectState, Long> tableColumnCreatedUserId = new TableColumn<>("Created User");
-        tableColumnCreatedUserId.setCellValueFactory(new PropertyValueFactory<>("createdUser"));
+        TableColumn<TaskState, String> tableColumnCreatedUser = new TableColumn<>("Created User");
+        tableColumnCreatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
-        TableColumn<ProjectState, Long> tableColumnUpdatedUserId = new TableColumn<>("Updated User");
-        tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
+        TableColumn<TaskState, String> tableColumnUpdatedUser = new TableColumn<>("Updated User");
+        tableColumnUpdatedUser.setCellValueFactory(cellData ->
+                new SimpleObjectProperty<>(cellData.getValue().getCreatedUser().getAbbreviation()));
 
         taskStatesTable.getColumns().addAll(tableColumnId, tableColumnTitle, tableColumnState,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
-                tableColumnCreatedUserId, tableColumnUpdatedUserId);
+                tableColumnCreatedUser, tableColumnUpdatedUser);
     }
 
 }
