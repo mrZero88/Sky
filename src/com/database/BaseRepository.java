@@ -15,4 +15,13 @@ public abstract class BaseRepository {
         ConfigPropertiesReader cpr = new ConfigPropertiesReader();
         this.CONN = cpr.getConn();
     }
+
+    protected void closeConnections() throws Exception {
+        if (this.preparedStatement != null)
+            this.preparedStatement.close();
+        if (this.statement != null)
+            this.statement.close();
+        if (this.resultSet != null)
+            this.resultSet.close();
+    }
 }

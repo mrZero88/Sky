@@ -2,6 +2,7 @@ package com.database;
 
 import com.models.Country;
 import com.models.Currency;
+import com.models.Feature;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -146,35 +147,91 @@ public class CurrenciesRepository extends BaseRepository {
         }
     }
 
-    public void loadUsers(ObservableList<Currency> currencies) throws Exception {
-        if(currencies.isEmpty())
-            return;
+    public ObservableList<Currency> loadCreatedUsers(ObservableList<Currency> currencies) throws Exception {
+        if (currencies.isEmpty())
+            return currencies;
 
-        Set<String> set = new HashSet<>();
-        for (Currency currency : currencies) {
-            set.add("" + currency.getCreatedUserId());
-            set.add("" + currency.getUpdatedUserId());
-        }
-
-        UsersRepository ur = new UsersRepository();
-        ObservableList<User> users = ur.getByIds(set);
-
-        for (Currency currency : currencies) {
-            for (User user : users) {
-                if (currency.getCreatedUserId() == user.getId())
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (Currency currency : currencies) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + currency.getCreatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
                     currency.setCreatedUser(user);
-                if (currency.getUpdatedUserId() == user.getId())
-                    currency.setUpdatedUser(user);
+                }
             }
+            return currencies;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 
-    protected void closeConnections() throws Exception {
-        if (this.preparedStatement != null)
-            this.preparedStatement.close();
-        if (this.statement != null)
-            this.statement.close();
-        if (this.resultSet != null)
-            this.resultSet.close();
+    public ObservableList<Currency> loadUpdatedUsers(ObservableList<Currency> currencies) throws Exception {
+        if (currencies.isEmpty())
+            return currencies;
+
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (Currency currency : currencies) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + currency.getUpdatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    currency.setUpdatedUser(user);
+                }
+            }
+            return currencies;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
     }
 }

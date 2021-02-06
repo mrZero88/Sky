@@ -142,35 +142,91 @@ public class TechnologiesRepository extends BaseRepository {
         }
     }
 
-    public void loadUsers(ObservableList<Technology> technologies) throws Exception {
-        if(technologies.isEmpty())
-            return;
+    public ObservableList<Technology> loadCreatedUsers(ObservableList<Technology> technologies) throws Exception {
+        if (technologies.isEmpty())
+            return technologies;
 
-        Set<String> set = new HashSet<>();
-        for (Technology technology : technologies) {
-            set.add("" + technology.getCreatedUserId());
-            set.add("" + technology.getUpdatedUserId());
-        }
-
-        UsersRepository ur = new UsersRepository();
-        ObservableList<User> users = ur.getByIds(set);
-
-        for (Technology technology : technologies) {
-            for (User user : users) {
-                if (technology.getCreatedUserId() == user.getId())
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (Technology technology : technologies) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + technology.getCreatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
                     technology.setCreatedUser(user);
-                if (technology.getUpdatedUserId() == user.getId())
-                    technology.setUpdatedUser(user);
+                }
             }
+            return technologies;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 
-    protected void closeConnections() throws Exception {
-        if (this.preparedStatement != null)
-            this.preparedStatement.close();
-        if (this.statement != null)
-            this.statement.close();
-        if (this.resultSet != null)
-            this.resultSet.close();
+    public ObservableList<Technology> loadUpdatedUsers(ObservableList<Technology> technologies) throws Exception {
+        if (technologies.isEmpty())
+            return technologies;
+
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (Technology technology : technologies) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + technology.getUpdatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    technology.setUpdatedUser(user);
+                }
+            }
+            return technologies;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
     }
 }

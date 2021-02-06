@@ -55,7 +55,8 @@ public class ProjectStatesController {
             }*/
 
             ObservableList<ProjectState> projectStates = projectStatesRepository.getAll();
-            projectStatesRepository.loadUsers(projectStates);
+            projectStatesRepository.loadCreatedUsers(projectStates);
+            projectStatesRepository.loadUpdatedUsers(projectStates);
             projectStatesTable.setItems(projectStates);
             addTableColumns();
         } catch (Exception e) {

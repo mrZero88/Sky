@@ -52,7 +52,8 @@ public class TaskStatesController {
             }*/
 
             ObservableList<TaskState> taskStates = taskStatesRepository.getAll();
-            taskStatesRepository.loadUsers(taskStates);
+            taskStatesRepository.loadCreatedUsers(taskStates);
+            taskStatesRepository.loadUpdatedUsers(taskStates);
             taskStatesTable.setItems(taskStates);
             addTableColumns();
         } catch (Exception e) {

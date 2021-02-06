@@ -26,7 +26,8 @@ public class CurrenciesController {
         try {
             CurrenciesRepository currenciesRepository = new CurrenciesRepository();
             ObservableList<Currency> currencies = currenciesRepository.getAll();
-            currenciesRepository.loadUsers(currencies);
+            currenciesRepository.loadCreatedUsers(currencies);
+            currenciesRepository.loadUpdatedUsers(currencies);
             currenciesTable.setItems(currencies);
             addTableColumns();
         } catch (Exception e) {

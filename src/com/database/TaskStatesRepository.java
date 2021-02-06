@@ -1,10 +1,9 @@
 package com.database;
 
-import com.models.ProjectState;
-import com.models.TaskState;
-import com.models.User;
+import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
@@ -141,35 +140,91 @@ public class TaskStatesRepository extends BaseRepository {
         }
     }
 
-    public void loadUsers(ObservableList<TaskState> taskStates) throws Exception {
-        if(taskStates.isEmpty())
-            return;
+    public ObservableList<TaskState> loadCreatedUsers(ObservableList<TaskState> taskStates) throws Exception {
+        if (taskStates.isEmpty())
+            return taskStates;
 
-        Set<String> set = new HashSet<>();
-        for (TaskState taskState : taskStates) {
-            set.add("" + taskState.getCreatedUserId());
-            set.add("" + taskState.getUpdatedUserId());
-        }
-
-        UsersRepository ur = new UsersRepository();
-        ObservableList<User> users = ur.getByIds(set);
-
-        for (TaskState taskState : taskStates) {
-            for (User user : users) {
-                if (taskState.getCreatedUserId() == user.getId())
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (TaskState taskState : taskStates) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + taskState.getCreatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
                     taskState.setCreatedUser(user);
-                if (taskState.getUpdatedUserId() == user.getId())
-                    taskState.setUpdatedUser(user);
+                }
             }
+            return taskStates;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 
-    protected void closeConnections() throws Exception {
-        if (this.preparedStatement != null)
-            this.preparedStatement.close();
-        if (this.statement != null)
-            this.statement.close();
-        if (this.resultSet != null)
-            this.resultSet.close();
+    public ObservableList<TaskState> loadUpdatedUsers(ObservableList<TaskState> taskStates) throws Exception {
+        if (taskStates.isEmpty())
+            return taskStates;
+
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (TaskState taskState : taskStates) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + taskState.getUpdatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    taskState.setUpdatedUser(user);
+                }
+            }
+            return taskStates;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
     }
 }

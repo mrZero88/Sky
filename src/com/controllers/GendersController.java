@@ -29,32 +29,9 @@ public class GendersController {
         try {
             GendersRepository gendersRepository = new GendersRepository();
 
-            /*int i = 1;
-            File dir = new File("/Users/danielcorreia/IdeaProjects/Flyzerosky/src/com/images/Genders/");
-            File[] directoryListing = dir.listFiles();
-            if (directoryListing != null) {
-                for (var child : Arrays.stream(directoryListing).sorted().toArray()) {
-                    File file = (File) child;
-
-                    if(file.getName().equals(".DS_Store"))
-                        continue;
-
-                    FileInputStream fis = new FileInputStream(file);
-
-                    Gender g = gendersRepository.getById(i);
-                    g.setGender(fis);
-                    gendersRepository.update(g);
-                    i++;
-                }
-            } else {
-                // Handle the case where dir is not really a directory.
-                // Checking dir.isDirectory() above would not be sufficient
-                // to avoid race conditions with another process that deletes
-                // directories.
-            }*/
-
             ObservableList<Gender> genders = gendersRepository.getAll();
-            gendersRepository.loadUsers(genders);
+            gendersRepository.loadCreatedUsers(genders);
+            gendersRepository.loadUpdatedUsers(genders);
             gendersTable.setItems(genders);
             addTableColumns();
         } catch (Exception e) {

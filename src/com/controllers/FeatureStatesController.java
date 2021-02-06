@@ -27,7 +27,8 @@ public class FeatureStatesController {
         try {
             FeatureStatesRepository featureStatesRepository = new FeatureStatesRepository();
             ObservableList<FeatureState> featureStates = featureStatesRepository.getAll();
-            featureStatesRepository.loadUsers(featureStates);
+            featureStatesRepository.loadCreatedUsers(featureStates);
+            featureStatesRepository.loadUpdatedUsers(featureStates);
             featureStatesTable.setItems(featureStates);
             addTableColumns();
         } catch (Exception e) {

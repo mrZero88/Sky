@@ -31,7 +31,8 @@ public class RanksController {
         try {
             RanksRepository ranksRepository = new RanksRepository();
             ObservableList<Rank> ranks = ranksRepository.getAll();
-            ranksRepository.loadUsers(ranks);
+            ranksRepository.loadCreatedUsers(ranks);
+            ranksRepository.loadUpdatedUsers(ranks);
             ranksTable.setItems(ranks);
             addTableColumns();
         } catch (Exception e) {

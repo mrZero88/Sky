@@ -2,7 +2,6 @@ package com.controllers;
 
 import com.database.BugsRepository;
 import com.models.Bug;
-import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -27,8 +26,9 @@ public class BugsController {
         try {
             BugsRepository bugsRepository = new BugsRepository();
             ObservableList<Bug> bugs = bugsRepository.getAll();
-            bugsRepository.loadUsers(bugs);
-            bugsRepository.loadStates(bugs);
+            bugsRepository.loadCreatedUsers(bugs);
+            bugsRepository.loadUpdatedUsers(bugs);
+            bugsRepository.loadBugStates(bugs);
             bugsTable.setItems(bugs);
             addTableColumns();
         } catch (Exception e) {
@@ -41,9 +41,8 @@ public class BugsController {
         TableColumn<Bug, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<Bug, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
+        TableColumn<Bug, ImageView> tableColumnState = new TableColumn<>("State View");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
 
         TableColumn<Bug, String> tableColumnStateDescription = new TableColumn<>("State");
         tableColumnStateDescription.setCellValueFactory(cellData ->

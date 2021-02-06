@@ -30,7 +30,8 @@ public class UsersController {
         try {
             UsersRepository usersRepository = new UsersRepository();
             ObservableList<User> users = usersRepository.getAll();
-            usersRepository.loadUsers(users);
+            usersRepository.loadCreatedUsers(users);
+            usersRepository.loadUpdatedUsers(users);
             usersRepository.loadCountries(users);
             usersTable.setItems(users);
             addTableColumns();

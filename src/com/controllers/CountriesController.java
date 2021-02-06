@@ -30,7 +30,8 @@ public class CountriesController {
         try {
             CountriesRepository countriesRepository = new CountriesRepository();
             ObservableList<Country> countries = countriesRepository.getAll();
-            countriesRepository.loadUsers(countries);
+            countriesRepository.loadCreatedUsers(countries);
+            countriesRepository.loadUpdatedUsers(countries);
             countriesTable.setItems(countries);
             addTableColumns();
         } catch (Exception e) {

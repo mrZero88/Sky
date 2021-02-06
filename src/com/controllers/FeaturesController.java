@@ -1,8 +1,6 @@
 package com.controllers;
 
-import com.database.BugsRepository;
 import com.database.FeaturesRepository;
-import com.models.Bug;
 import com.models.Feature;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -28,8 +26,9 @@ public class FeaturesController {
         try {
             FeaturesRepository featuresRepository = new FeaturesRepository();
             ObservableList<Feature> features = featuresRepository.getAll();
-            featuresRepository.loadUsers(features);
-            featuresRepository.loadStates(features);
+            featuresRepository.loadCreatedUsers(features);
+            featuresRepository.loadUpdatedUsers(features);
+            featuresRepository.loadFeatureStates(features);
             featuresTable.setItems(features);
             addTableColumns();
         } catch (Exception e) {

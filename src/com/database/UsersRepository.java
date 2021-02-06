@@ -1,5 +1,6 @@
 package com.database;
 
+import com.models.Bug;
 import com.models.Country;
 import com.models.Technology;
 import com.models.User;
@@ -263,26 +264,91 @@ public class UsersRepository extends BaseRepository {
         }
     }
 
-    public void loadUsers(ObservableList<User> users) throws Exception {
-        if(users.isEmpty())
-            return;
+    public ObservableList<User> loadCreatedUsers(ObservableList<User> users) throws Exception {
+        if (users.isEmpty())
+            return users;
 
-        Set<String> set = new HashSet<>();
-        for (User user : users) {
-            set.add("" + user.getCreatedUserId());
-            set.add("" + user.getUpdatedUserId());
-        }
-
-        UsersRepository ur = new UsersRepository();
-        ObservableList<User> createdUpdatedUsers = ur.getByIds(set);
-
-        for (User user : users) {
-            for (User otherUser : createdUpdatedUsers) {
-                if (user.getCreatedUserId() == otherUser.getId())
-                    user.setCreatedUser(otherUser);
-                if (user.getUpdatedUserId() == otherUser.getId())
-                    user.setUpdatedUser(otherUser);
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (User userItem : users) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + userItem.getCreatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    userItem.setCreatedUser(user);
+                }
             }
+            return users;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
+    public ObservableList<User> loadUpdatedUsers(ObservableList<User> users) throws Exception {
+        if (users.isEmpty())
+            return users;
+
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (User userItem : users) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + userItem.getUpdatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    userItem.setUpdatedUser(user);
+                }
+            }
+            return users;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 
@@ -304,14 +370,5 @@ public class UsersRepository extends BaseRepository {
                     user.setCountry(country);
             }
         }
-    }
-
-    protected void closeConnections() throws Exception {
-        if (this.preparedStatement != null)
-            this.preparedStatement.close();
-        if (this.statement != null)
-            this.statement.close();
-        if (this.resultSet != null)
-            this.resultSet.close();
     }
 }

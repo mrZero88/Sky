@@ -1,9 +1,6 @@
 package com.database;
 
-import com.models.BugState;
-import com.models.Feature;
-import com.models.FeatureState;
-import com.models.User;
+import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -169,35 +166,91 @@ public class FeatureStatesRepository extends BaseRepository {
         }
     }
 
-    public void loadUsers(ObservableList<FeatureState> featureStates) throws Exception {
+    public ObservableList<FeatureState> loadCreatedUsers(ObservableList<FeatureState> featureStates) throws Exception {
         if (featureStates.isEmpty())
-            return;
+            return featureStates;
 
-        Set<String> set = new HashSet<>();
-        for (FeatureState featureState : featureStates) {
-            set.add("" + featureState.getCreatedUserId());
-            set.add("" + featureState.getUpdatedUserId());
-        }
-
-        UsersRepository ur = new UsersRepository();
-        ObservableList<User> users = ur.getByIds(set);
-
-        for (FeatureState featureState : featureStates) {
-            for (User user : users) {
-                if (featureState.getCreatedUserId() == user.getId())
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (FeatureState featureState : featureStates) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + featureState.getCreatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
                     featureState.setCreatedUser(user);
-                if (featureState.getUpdatedUserId() == user.getId())
-                    featureState.setUpdatedUser(user);
+                }
             }
+            return featureStates;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
         }
     }
 
-    protected void closeConnections() throws Exception {
-        if (this.preparedStatement != null)
-            this.preparedStatement.close();
-        if (this.statement != null)
-            this.statement.close();
-        if (this.resultSet != null)
-            this.resultSet.close();
+    public ObservableList<FeatureState> loadUpdatedUsers(ObservableList<FeatureState> featureStates) throws Exception {
+        if (featureStates.isEmpty())
+            return featureStates;
+
+        try {
+            connect = DriverManager.getConnection(CONN);
+            for (FeatureState featureState : featureStates) {
+                statement = connect.createStatement();
+                resultSet = statement.executeQuery("select * from users where active=true and id=" + featureState.getUpdatedUserId());
+                while (resultSet.next()) {
+                    User user = new User();
+                    user.setId(resultSet.getLong("id"));
+                    user.setFirstName(resultSet.getString("first_name"));
+                    user.setLastName(resultSet.getString("last_name"));
+                    user.setUsername(resultSet.getString("username"));
+                    user.setEmail(resultSet.getString("email"));
+                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
+                    user.setPassword(resultSet.getString("password"));
+                    user.setTypeId(resultSet.getByte("type_id"));
+                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
+                    user.setCountryId(resultSet.getInt("country_id"));
+                    user.setPicture(resultSet.getBinaryStream("picture"));
+                    user.setBirthDate(resultSet.getDate("birth_date"));
+                    user.setAdress(resultSet.getString("adress"));
+                    user.setPostalCode(resultSet.getString("postal_code"));
+                    user.setPhoneNumber(resultSet.getString("phone_number"));
+                    user.setRememberToken(resultSet.getString("remember_token"));
+                    user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
+                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
+                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                    user.setActive(resultSet.getBoolean("active"));
+                    featureState.setUpdatedUser(user);
+                }
+            }
+            return featureStates;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
     }
 }
