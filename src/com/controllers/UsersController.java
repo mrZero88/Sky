@@ -9,12 +9,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-
-import java.io.File;
-import java.io.FileInputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 public class UsersController {
 

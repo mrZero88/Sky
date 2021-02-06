@@ -32,6 +32,7 @@ public class User {
     private StringProperty phoneNumber;
     private StringProperty rememberToken;
     private IntegerProperty genderId;
+    private StringProperty abbreviation;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -166,7 +167,7 @@ public class User {
         return picture.get();
     }
 
-    public void setPicture(InputStream picture) throws Exception{
+    public void setPicture(InputStream picture) throws Exception {
         if (picture != null) {
             Image image = SwingFXUtils.toFXImage(ImageIO.read(picture), null);
             pictureView.get().setImage(image);
@@ -262,6 +263,18 @@ public class User {
 
     public IntegerProperty genderIdProperty() {
         return genderId;
+    }
+
+    public String getAbbreviation() {
+        return abbreviation.get();
+    }
+
+    public void setAbbreviation(String abbreviation) {
+        this.abbreviation.set(abbreviation);
+    }
+
+    public StringProperty abbreviationProperty() {
+        return abbreviation;
     }
 
     public Timestamp getCreatedAt() {
@@ -369,8 +382,8 @@ public class User {
         this.emailVerifiedAt = new SimpleObjectProperty<>(this, "emailVerifiedAt");
         this.password = new SimpleStringProperty(this, "password");
         this.typeId = new SimpleIntegerProperty(this, "typeId", 1);
-        this.isSuperUser = new SimpleBooleanProperty(this, "isSuperUser",false);
-        this.countryId = new SimpleIntegerProperty(this, "countryId",1);
+        this.isSuperUser = new SimpleBooleanProperty(this, "isSuperUser", false);
+        this.countryId = new SimpleIntegerProperty(this, "countryId", 1);
         this.picture = new SimpleObjectProperty<>(this, "picture");
         this.pictureView = new SimpleObjectProperty<>(this, "pictureView", new ImageView());
         this.birthDate = new SimpleObjectProperty<>(this, "birthDate");
@@ -378,12 +391,13 @@ public class User {
         this.postalCode = new SimpleStringProperty(this, "postalCode");
         this.phoneNumber = new SimpleStringProperty(this, "phoneNumber");
         this.rememberToken = new SimpleStringProperty(this, "rememberToken");
-        this.genderId = new SimpleIntegerProperty(this, "genderId",1);
+        this.genderId = new SimpleIntegerProperty(this, "genderId", 1);
+        this.abbreviation = new SimpleStringProperty(this, "abbreviation");
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
         this.updatedUserId = new SimpleLongProperty(this, "updatedUserId", 1);
-        this.active = new SimpleBooleanProperty(this, "active",true);
+        this.active = new SimpleBooleanProperty(this, "active", true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
         this.country = new SimpleObjectProperty<>(this, "country");

@@ -194,6 +194,7 @@ public class BugStatesRepository extends BaseRepository {
                     user.setPhoneNumber(resultSet.getString("phone_number"));
                     user.setRememberToken(resultSet.getString("remember_token"));
                     user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setAbbreviation(resultSet.getString("abbreviation"));
                     user.setCreatedAt(resultSet.getTimestamp("created_at"));
                     user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                     user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -238,6 +239,7 @@ public class BugStatesRepository extends BaseRepository {
                     user.setPhoneNumber(resultSet.getString("phone_number"));
                     user.setRememberToken(resultSet.getString("remember_token"));
                     user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setAbbreviation(resultSet.getString("abbreviation"));
                     user.setCreatedAt(resultSet.getTimestamp("created_at"));
                     user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                     user.setCreatedUserId(resultSet.getLong("created_user_id"));

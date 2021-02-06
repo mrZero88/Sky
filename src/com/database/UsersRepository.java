@@ -1,17 +1,13 @@
 package com.database;
 
-import com.models.Bug;
 import com.models.Country;
-import com.models.Technology;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -40,11 +36,12 @@ public class UsersRepository extends BaseRepository {
                             "postal_code, " +
                             "phone_number, " +
                             "gender_id, " +
+                            "abbreviation, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getUserName());
@@ -59,10 +56,11 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setString(12, user.getPostalCode());
             preparedStatement.setString(13, user.getPhoneNumber());
             preparedStatement.setInt(14, user.getGenderId());
-            preparedStatement.setTimestamp(15, user.getCreatedAt());
-            preparedStatement.setTimestamp(16, user.getUpdatedAt());
-            preparedStatement.setLong(17, user.getCreatedUserId());
-            preparedStatement.setLong(18, user.getUpdatedUserId());
+            preparedStatement.setString(15, user.getAbbreviation());
+            preparedStatement.setTimestamp(16, user.getCreatedAt());
+            preparedStatement.setTimestamp(17, user.getUpdatedAt());
+            preparedStatement.setLong(18, user.getCreatedUserId());
+            preparedStatement.setLong(19, user.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from users order by id desc limit 1");
@@ -101,6 +99,7 @@ public class UsersRepository extends BaseRepository {
             user.setPhoneNumber(resultSet.getString("phone_number"));
             user.setRememberToken(resultSet.getString("remember_token"));
             user.setGenderId(resultSet.getInt("gender_id"));
+            user.setAbbreviation(resultSet.getString("abbreviation"));
             user.setCreatedAt(resultSet.getTimestamp("created_at"));
             user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -140,6 +139,7 @@ public class UsersRepository extends BaseRepository {
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setRememberToken(resultSet.getString("remember_token"));
                 user.setGenderId(resultSet.getInt("gender_id"));
+                user.setAbbreviation(resultSet.getString("abbreviation"));
                 user.setCreatedAt(resultSet.getTimestamp("created_at"));
                 user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -180,6 +180,7 @@ public class UsersRepository extends BaseRepository {
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setRememberToken(resultSet.getString("remember_token"));
                 user.setGenderId(resultSet.getInt("gender_id"));
+                user.setAbbreviation(resultSet.getString("abbreviation"));
                 user.setCreatedAt(resultSet.getTimestamp("created_at"));
                 user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -217,6 +218,7 @@ public class UsersRepository extends BaseRepository {
                             " phone_number = ?, " +
                             " remember_token = ?, " +
                             " gender_id = ?, " +
+                            " abbreviation = ?, " +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
@@ -236,9 +238,10 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setString(14, user.getPhoneNumber());
             preparedStatement.setString(15, user.getRememberToken());
             preparedStatement.setInt(16, user.getGenderId());
-            preparedStatement.setTimestamp(17, user.getUpdatedAt());
-            preparedStatement.setLong(18, user.getUpdatedUserId());
-            preparedStatement.setLong(19, user.getId());
+            preparedStatement.setString(17, user.getAbbreviation());
+            preparedStatement.setTimestamp(18, user.getUpdatedAt());
+            preparedStatement.setLong(19, user.getUpdatedUserId());
+            preparedStatement.setLong(20, user.getId());
             preparedStatement.executeUpdate();
             return user;
         } catch (Exception e) {
@@ -292,6 +295,7 @@ public class UsersRepository extends BaseRepository {
                     user.setPhoneNumber(resultSet.getString("phone_number"));
                     user.setRememberToken(resultSet.getString("remember_token"));
                     user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setAbbreviation(resultSet.getString("abbreviation"));
                     user.setCreatedAt(resultSet.getTimestamp("created_at"));
                     user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                     user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -336,6 +340,7 @@ public class UsersRepository extends BaseRepository {
                     user.setPhoneNumber(resultSet.getString("phone_number"));
                     user.setRememberToken(resultSet.getString("remember_token"));
                     user.setGenderId(resultSet.getInt("gender_id"));
+                    user.setAbbreviation(resultSet.getString("abbreviation"));
                     user.setCreatedAt(resultSet.getTimestamp("created_at"));
                     user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                     user.setCreatedUserId(resultSet.getLong("created_user_id"));
