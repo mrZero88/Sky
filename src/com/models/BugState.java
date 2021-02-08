@@ -54,10 +54,10 @@ public class BugState {
     }
 
     public void setState(InputStream state) throws Exception {
-        if (state != null) {
+        /*if (state != null) {
             Image image = SwingFXUtils.toFXImage(ImageIO.read(state), null);
             stateView.get().setImage(image);
-        }
+        }*/
         this.state.set(state);
     }
 
@@ -173,20 +173,6 @@ public class BugState {
         this.active = new SimpleBooleanProperty(this, "active", true);
         this.createdUser = new SimpleObjectProperty<>(this, "createdUser");
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
-    }
-
-    public BugState(BugState bugState) throws Exception{
-        this.id = bugState.id;
-        this.title = bugState.title;
-        this.state = bugState.state;
-        this.stateView = new SimpleObjectProperty<>(this, "stateView", new ImageView(new Image(this.state.get())));
-        this.createdAt = bugState.createdAt;
-        this.updatedAt = bugState.updatedAt;
-        this.createdUserId = bugState.createdUserId;
-        this.updatedUserId = bugState.updatedUserId;
-        this.active = bugState.active;
-        this.createdUser = bugState.createdUser;
-        this.updatedUser = bugState.updatedUser;
     }
 
     @Override

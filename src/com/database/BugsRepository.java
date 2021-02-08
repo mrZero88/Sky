@@ -190,13 +190,9 @@ public class BugsRepository extends BaseRepository {
         for (Bug bug : bugs) {
             for (BugState bugState : bugStates) {
                 if (bug.getStateId() == bugState.getId())
-                    bug.setState(new BugState(bugState));
+                    bug.setState(bugState);
             }
         }
-
-        /*for (Bug bug : bugs) {
-            bug.setState(bsr.getById(bug.getStateId()));
-        }*/
     }
 
     protected void closeConnections() throws Exception {

@@ -2,15 +2,20 @@ package com.controllers;
 
 import com.database.BugsRepository;
 import com.models.Bug;
-import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class BugsController {
@@ -41,9 +46,33 @@ public class BugsController {
         TableColumn<Bug, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<Bug, ImageView> tableColumnState = new TableColumn<>("State");
+        TableColumn<Bug, InputStream> tableColumnState = new TableColumn<>("State");
         tableColumnState.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
+                new SimpleObjectProperty<>(cellData.getValue().getState().getState()));
+        tableColumnState.setCellFactory(param -> new TableCell<>() {
+
+            private final ImageView imageView = new ImageView();
+
+            @Override
+            protected void updateItem(InputStream item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item == null || empty) {
+                    setText(null);
+                    setGraphic(null);
+                } else {
+                    try {
+                        item.reset();
+                        BufferedImage bufferedImage = ImageIO.read(item);
+                        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+                        imageView.setImage(image);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    setGraphic(imageView);
+                }
+                this.setItem(item);
+            }
+        });
 
         TableColumn<Bug, String> tableColumnStateDescription = new TableColumn<>("State");
         tableColumnStateDescription.setCellValueFactory(cellData ->
