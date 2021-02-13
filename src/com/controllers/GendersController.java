@@ -2,7 +2,10 @@ package com.controllers;
 
 import com.database.GendersRepository;
 import com.database.ProjectStatesRepository;
+import com.models.FeatureState;
 import com.models.Gender;
+import com.models.ImageTableCell;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -12,6 +15,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -73,8 +77,9 @@ public class GendersController {
         TableColumn<Gender, String> tableColumnShortcut = new TableColumn<>("Shortcut");
         tableColumnShortcut.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
-        TableColumn<Gender, ImageView> tableColumnGender = new TableColumn<>("Gender");
-        tableColumnGender.setCellValueFactory(new PropertyValueFactory<>("genderView"));
+        TableColumn<Gender, InputStream> tableColumnGender = new TableColumn<>("Gender");
+        tableColumnGender.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getGender()));
+        tableColumnGender.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Gender, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

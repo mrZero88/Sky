@@ -1,6 +1,8 @@
 package com.controllers;
 
 import com.database.UsersRepository;
+import com.models.ImageTableCell;
+import com.models.TaskState;
 import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -12,6 +14,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Arrays;
@@ -44,8 +47,9 @@ public class UsersController {
         TableColumn<User, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<User, ImageView> tableColumnPicture = new TableColumn<>("Picture");
-        tableColumnPicture.setCellValueFactory(new PropertyValueFactory<>("pictureView"));
+        TableColumn<User, InputStream> tableColumnPicture = new TableColumn<>("Picture");
+        tableColumnPicture.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getPicture()));
+        tableColumnPicture.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<User, String> tableColumnFirstName = new TableColumn<>("First Name");
         tableColumnFirstName.setCellValueFactory(new PropertyValueFactory<>("firstName"));
@@ -80,9 +84,9 @@ public class UsersController {
         TableColumn<User, Long> tableColumnCountryName = new TableColumn<>("Country");
         tableColumnCountryName.setCellValueFactory(new PropertyValueFactory<>("country"));
 
-        TableColumn<User, ImageView> tableColumnCountry = new TableColumn<>("Country");
-        tableColumnCountry.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getCountry().getFlagView()));
+        TableColumn<User, InputStream> tableColumnCountry = new TableColumn<>("Country");
+        tableColumnCountry.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getCountry().getFlag()));
+        tableColumnCountry.setCellFactory(param -> new ImageTableCell());
 
         usersTable.getColumns().addAll(tableColumnId, tableColumnPicture, tableColumnFirstName, tableColumnLastName,
                 tableColumnUsername, tableColumnEmail, tableColumnBirthDate, tableColumnPhoneNumber,

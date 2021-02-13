@@ -3,7 +3,10 @@ package com.controllers;
 import com.database.BugsRepository;
 import com.database.ProjectStatesRepository;
 import com.models.Bug;
+import com.models.FeatureState;
+import com.models.ImageTableCell;
 import com.models.ProjectState;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -13,6 +16,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -71,8 +75,9 @@ public class ProjectStatesController {
         TableColumn<ProjectState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<ProjectState, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+        TableColumn<ProjectState, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<ProjectState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

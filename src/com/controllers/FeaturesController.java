@@ -3,7 +3,9 @@ package com.controllers;
 import com.database.BugsRepository;
 import com.database.FeaturesRepository;
 import com.models.Bug;
+import com.models.BugState;
 import com.models.Feature;
+import com.models.ImageTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -12,6 +14,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class FeaturesController {
@@ -42,9 +45,9 @@ public class FeaturesController {
         TableColumn<Feature, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<Feature, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
+        TableColumn<Feature, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Feature, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));

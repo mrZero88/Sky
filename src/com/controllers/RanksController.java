@@ -1,7 +1,10 @@
 package com.controllers;
 
 import com.database.RanksRepository;
+import com.models.ImageTableCell;
+import com.models.ProjectState;
 import com.models.Rank;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -50,8 +53,9 @@ public class RanksController {
         TableColumn<Rank, String> tableColumnLevel = new TableColumn<>("Level");
         tableColumnLevel.setCellValueFactory(new PropertyValueFactory<>("level"));
 
-        TableColumn<Rank, ImageView> tableColumnImage = new TableColumn<>("Badge");
-        tableColumnImage.setCellValueFactory(new PropertyValueFactory<>("badgeView"));
+        TableColumn<Rank, InputStream> tableColumnBadge = new TableColumn<>("Badge");
+        tableColumnBadge.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getBadge()));
+        tableColumnBadge.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Rank, ImageView> tableColumnTasksRequired = new TableColumn<>("Tasks Required");
         tableColumnTasksRequired.setCellValueFactory(new PropertyValueFactory<>("tasksRequired"));
@@ -69,7 +73,7 @@ public class RanksController {
         tableColumnUpdatedUserId.setCellValueFactory(new PropertyValueFactory<>("updatedUser"));
 
         ranksTable.getColumns().addAll(tableColumnId, tableColumnTitle,
-                tableColumnLevel, tableColumnImage, tableColumnTasksRequired,
+                tableColumnLevel, tableColumnBadge, tableColumnTasksRequired,
                 tableColumnCreatedAt, tableColumnUpdatedAt,
                 tableColumnCreatedUserId, tableColumnUpdatedUserId);
     }

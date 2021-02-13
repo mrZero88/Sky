@@ -17,7 +17,6 @@ public class Rank {
     private StringProperty title;
     private IntegerProperty level;
     private ObjectProperty<InputStream> badge;
-    private ObjectProperty<ImageView> badgeView;
     private IntegerProperty tasksRequired;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
@@ -69,28 +68,11 @@ public class Rank {
     }
 
     public void setBadge(InputStream badge) throws Exception {
-        if (badge != null) {
-            BufferedImage bfimg = ImageIO.read(badge);
-            Image image = SwingFXUtils.toFXImage(bfimg, null);
-            badgeView.get().setImage(image);
-        }
         this.badge.set(badge);
     }
 
     public ObjectProperty<InputStream> badgeProperty() {
         return badge;
-    }
-
-    public ImageView getBadgeView() {
-        return badgeView.get();
-    }
-
-    public void setBadgeView(ImageView badgeView) {
-        this.badgeView.set(badgeView);
-    }
-
-    public ObjectProperty<ImageView> badgeViewProperty() {
-        return badgeView;
     }
 
     public int getTasksRequired() {
@@ -194,7 +176,6 @@ public class Rank {
         this.title = new SimpleStringProperty(this, "title");
         this.level = new SimpleIntegerProperty(this, "level");
         this.badge = new SimpleObjectProperty<>(this, "badge");
-        this.badgeView = new SimpleObjectProperty<>(this, "imageView", new ImageView());
         this.tasksRequired = new SimpleIntegerProperty(this, "tasksRequired");
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));

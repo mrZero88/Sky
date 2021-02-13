@@ -3,7 +3,10 @@ package com.controllers;
 import com.database.BugsRepository;
 import com.database.CountriesRepository;
 import com.models.Bug;
+import com.models.BugState;
 import com.models.Country;
+import com.models.ImageTableCell;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
@@ -13,6 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.text.html.ImageView;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -49,8 +53,9 @@ public class CountriesController {
         TableColumn<Country, String> tableColumnShortcut = new TableColumn<>("Shortcut");
         tableColumnShortcut.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
-        TableColumn<Country, ImageView> tableColumnFlag = new TableColumn<>("Flag");
-        tableColumnFlag.setCellValueFactory(new PropertyValueFactory<>("flagView"));
+        TableColumn<Country, InputStream> tableColumnFlag = new TableColumn<>("Flag");
+        tableColumnFlag.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getFlag()));
+        tableColumnFlag.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Country, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

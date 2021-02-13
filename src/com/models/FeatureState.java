@@ -14,7 +14,6 @@ public class FeatureState {
     private IntegerProperty id;
     private StringProperty title;
     private ObjectProperty<InputStream> state;
-    private ObjectProperty<ImageView> stateView;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -53,27 +52,11 @@ public class FeatureState {
     }
 
     public void setState(InputStream state) throws Exception {
-        if (state != null) {
-            Image image = SwingFXUtils.toFXImage(ImageIO.read(state), null);
-            stateView.get().setImage(image);
-        }
         this.state.set(state);
     }
 
     public ObjectProperty<InputStream> stateProperty() {
         return state;
-    }
-
-    public ImageView getStateView() {
-        return stateView.get();
-    }
-
-    public void setStateView(ImageView stateView) {
-        this.stateView.set(stateView);
-    }
-
-    public ObjectProperty<ImageView> stateViewProperty() {
-        return stateView;
     }
 
     public Timestamp getCreatedAt() {
@@ -164,7 +147,6 @@ public class FeatureState {
         this.id = new SimpleIntegerProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
         this.state = new SimpleObjectProperty<>(this, "state");
-        this.stateView = new SimpleObjectProperty<>(this, "stateView", new ImageView());
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);

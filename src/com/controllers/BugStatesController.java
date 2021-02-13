@@ -1,13 +1,18 @@
 package com.controllers;
 
 import com.database.BugStatesRepository;
+import com.models.Bug;
 import com.models.BugState;
+import com.models.ImageTableCell;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class BugStatesController {
@@ -40,8 +45,9 @@ public class BugStatesController {
         TableColumn<BugState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<BugState, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+        TableColumn<BugState, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<BugState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

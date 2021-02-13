@@ -2,6 +2,7 @@ package com.controllers;
 
 import com.database.BugsRepository;
 import com.models.Bug;
+import com.models.ImageTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.embed.swing.SwingFXUtils;
@@ -47,32 +48,8 @@ public class BugsController {
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
         TableColumn<Bug, InputStream> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(cellData ->
-                new SimpleObjectProperty<>(cellData.getValue().getState().getState()));
-        tableColumnState.setCellFactory(param -> new TableCell<>() {
-
-            private final ImageView imageView = new ImageView();
-
-            @Override
-            protected void updateItem(InputStream item, boolean empty) {
-                super.updateItem(item, empty);
-                if (item == null || empty) {
-                    setText(null);
-                    setGraphic(null);
-                } else {
-                    try {
-                        item.reset();
-                        BufferedImage bufferedImage = ImageIO.read(item);
-                        Image image = SwingFXUtils.toFXImage(bufferedImage, null);
-                        imageView.setImage(image);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    setGraphic(imageView);
-                }
-                this.setItem(item);
-            }
-        });
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Bug, String> tableColumnStateDescription = new TableColumn<>("State");
         tableColumnStateDescription.setCellValueFactory(cellData ->
