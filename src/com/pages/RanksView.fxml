@@ -5,9 +5,9 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:controller="com.controllers.RanksController" prefHeight="581.0" prefWidth="570.0" styleClass="view" stylesheets="@../styles/View.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane fx:controller="com.controllers.RanksController" maxHeight="-1.0" maxWidth="-1.0" prefHeight="581.0" prefWidth="570.0" styleClass="view" stylesheets="@../styles/View.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label layoutX="62.0" layoutY="23.0" text="Ranks" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <Label layoutX="62.0" layoutY="23.0" text="Ranks" textFill="SILVER" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="29.0" />
          </font>
