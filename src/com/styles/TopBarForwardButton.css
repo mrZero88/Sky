@@ -1,0 +1,19 @@
+.topbarforwardbutton {
+    -fx-background-image: url('../images/forward.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-width: 32px;
+    -fx-height: 32px;
+    -fx-background-color: transparent;
+    -fx-background-radius: 5px;
+}
+
+.topbarforwardbutton:hover {
+    -fx-background-image: url('../images/forward.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-width: 32px;
+    -fx-height: 32px;
+    -fx-background-color: white;
+    -fx-background-radius: 5px;
+}

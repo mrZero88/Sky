@@ -1,0 +1,6 @@
+.topbar {
+    -fx-background-color: #414345;
+    -fx-background-radius: 5;
+    -fx-padding: 4px;
+    -fx-spacing: 20px;
+}
