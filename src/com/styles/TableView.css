@@ -11,7 +11,7 @@
 }
 
 .table-view .column-header-background{
-    -fx-background-color: linear-gradient(to bottom, #000000, #434343);
+    -fx-background-color: linear-gradient(to bottom, #414345, #232526);
     -fx-background-radius: 7px 7px 0px 0px;
     -fx-background-insets: 0 11px 0 0;
     -fx-padding: 0 0 5px 0;
@@ -19,7 +19,7 @@
 
 .table-view .column-header {
     -fx-background-color: transparent;
-    -fx-text-background-color: white;
+    -fx-text-background-color: silver;
 }
 
 .table-view .table-cell{
@@ -27,20 +27,20 @@
     -fx-padding: 2 0 2 10px;
 }
 .table-row-cell:hover {
-    -fx-background-color: #93f9b911;
+    -fx-background-color: #99f2c8;
     -fx-text-background-color: silver;
 }
 .table-row-cell:odd{
-    -fx-background-color: #000000;
+    -fx-background-color: #232526;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
-    -fx-text-background-color: white;
+    -fx-text-background-color: silver;
 }
 .table-row-cell:even{
-    -fx-background-color: #434343;
+    -fx-background-color: #414345;
     -fx-background-insets: 0, 0 0 1 0;
     -fx-padding: 0.0em;
-    -fx-text-background-color: white;
+    -fx-text-background-color: silver;
 }
 
 .table-view .virtual-flow .scroll-bar:vertical,
@@ -59,10 +59,10 @@
 }
 
 .table-view .virtual-flow .scroll-bar:vertical .thumb{
-    -fx-background-color:  linear-gradient(to bottom, #000000, #434343);
+    -fx-background-color:  linear-gradient(to bottom, #232526, #414345);
 }
 .table-view .virtual-flow .scroll-bar:horizontal .thumb {
-    -fx-background-color:  linear-gradient(to right, #000000, #434343);
+    -fx-background-color:  linear-gradient(to right, #232526, #414345);
 }
 
 .table-cell {
