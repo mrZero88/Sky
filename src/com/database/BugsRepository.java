@@ -5,7 +5,6 @@ import com.models.BugState;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-
 import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
@@ -153,123 +152,46 @@ public class BugsRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<Bug> loadCreatedUsers(ObservableList<Bug> bugs) throws Exception {
+    public void loadUsers(ObservableList<Bug> bugs) throws Exception {
         if (bugs.isEmpty())
-            return bugs;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Bug bug : bugs) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + bug.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        Set<String> set = new HashSet<>();
+        for (Bug bug : bugs) {
+            set.add("" + bug.getCreatedUserId());
+            set.add("" + bug.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (Bug bug : bugs) {
+            for (User user : users) {
+                if (bug.getCreatedUserId() == user.getId())
                     bug.setCreatedUser(user);
-                }
-            }
-            return bugs;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
-        }
-    }
-
-    public ObservableList<Bug> loadUpdatedUsers(ObservableList<Bug> bugs) throws Exception {
-        if (bugs.isEmpty())
-            return bugs;
-
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Bug bug : bugs) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + bug.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+                if (bug.getUpdatedUserId() == user.getId())
                     bug.setUpdatedUser(user);
-                }
             }
-            return bugs;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 
-    public ObservableList<Bug> loadBugStates(ObservableList<Bug> bugs) throws Exception {
+    public void loadStates(ObservableList<Bug> bugs) throws Exception {
         if (bugs.isEmpty())
-            return bugs;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Bug bug : bugs) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from bug_states where active=true and id=" + bug.getStateId());
-                while (resultSet.next()) {
-                    BugState bugState = new BugState();
-                    bugState.setId(resultSet.getInt("id"));
-                    bugState.setTitle(resultSet.getString("title"));
-                    bugState.setState(resultSet.getBinaryStream("state"));
-                    bugState.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    bugState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    bugState.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    bugState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    bugState.setActive(resultSet.getBoolean("active"));
+        Set<String> set = new HashSet<>();
+        for (Bug bug : bugs) {
+            set.add("" + bug.getStateId());
+        }
+
+        BugStatesRepository bsr = new BugStatesRepository();
+        ObservableList<BugState> bugStates = bsr.getByIds(set);
+
+        for (Bug bug : bugs) {
+            for (BugState bugState : bugStates) {
+                if (bug.getStateId() == bugState.getId())
                     bug.setState(bugState);
-                }
             }
-            return bugs;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

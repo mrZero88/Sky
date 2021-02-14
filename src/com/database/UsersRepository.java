@@ -1,5 +1,6 @@
 package com.database;
 
+import com.models.Bug;
 import com.models.Country;
 import com.models.User;
 import javafx.collections.FXCollections;
@@ -8,6 +9,7 @@ import java.sql.DriverManager;
 import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -267,126 +269,46 @@ public class UsersRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<User> loadCreatedUsers(ObservableList<User> users) throws Exception {
+    public void loadUsers(ObservableList<User> users) throws Exception {
         if (users.isEmpty())
-            return users;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (User userItem : users) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + userItem.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    userItem.setCreatedUser(user);
-                }
+        Set<String> set = new HashSet<>();
+        for (User user : users) {
+            set.add("" + user.getCreatedUserId());
+            set.add("" + user.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> otherUsers = ur.getByIds(set);
+
+        for (User user : users) {
+            for (User otherUser : otherUsers) {
+                if (user.getCreatedUserId() == otherUser.getId())
+                    user.setCreatedUser(otherUser);
+                if (user.getUpdatedUserId() == otherUser.getId())
+                    user.setUpdatedUser(otherUser);
             }
-            return users;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 
-    public ObservableList<User> loadUpdatedUsers(ObservableList<User> users) throws Exception {
+    public void loadCountries(ObservableList<User> users) throws Exception {
         if (users.isEmpty())
-            return users;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (User userItem : users) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + userItem.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    userItem.setUpdatedUser(user);
-                }
-            }
-            return users;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
+        Set<String> set = new HashSet<>();
+        for (User user : users) {
+            set.add("" + user.getCountryId());
         }
-    }
 
-    public ObservableList<User> loadCountries(ObservableList<User> users) throws Exception {
-        if (users.isEmpty())
-            return users;
+        CountriesRepository cr = new CountriesRepository();
+        ObservableList<Country> countries = cr.getByIds(set);
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (User user : users) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from countries where active=true and id=" + user.getCountryId());
-                while (resultSet.next()) {
-                    Country country = new Country();
-                    country.setId(resultSet.getInt("id"));
-                    country.setName(resultSet.getString("name"));
-                    country.setFlag(resultSet.getBinaryStream("flag"));
-                    country.setShortcut(resultSet.getString("shortcut"));
-                    country.setContinentId(resultSet.getByte("continent_id"));
-                    country.setFileName(resultSet.getString("file_name"));
-                    country.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    country.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    country.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    country.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    country.setActive(resultSet.getBoolean("active"));
+        for (User user : users) {
+            for (Country country : countries) {
+                if (user.getCountryId() == country.getId())
                     user.setCountry(country);
-                }
             }
-            return users;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

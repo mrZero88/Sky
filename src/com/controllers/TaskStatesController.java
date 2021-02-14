@@ -2,9 +2,9 @@ package com.controllers;
 
 import com.database.ProjectStatesRepository;
 import com.database.TaskStatesRepository;
+import com.models.ImageTableCell;
 import com.models.ProjectState;
 import com.models.TaskState;
-import com.models.Technology;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class TaskStatesController {
@@ -54,8 +55,7 @@ public class TaskStatesController {
             }*/
 
             ObservableList<TaskState> taskStates = taskStatesRepository.getAll();
-            taskStatesRepository.loadCreatedUsers(taskStates);
-            taskStatesRepository.loadUpdatedUsers(taskStates);
+            taskStatesRepository.loadUsers(taskStates);
             taskStatesTable.setItems(taskStates);
             addTableColumns();
         } catch (Exception e) {
@@ -71,8 +71,9 @@ public class TaskStatesController {
         TableColumn<TaskState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<TaskState, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+        TableColumn<TaskState, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<TaskState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

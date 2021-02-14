@@ -3,7 +3,7 @@ package com.controllers;
 import com.database.GendersRepository;
 import com.database.ProjectStatesRepository;
 import com.models.Gender;
-import com.models.Technology;
+import com.models.ImageTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,6 +14,7 @@ import javafx.scene.image.ImageView;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.Arrays;
 
@@ -31,9 +32,32 @@ public class GendersController {
         try {
             GendersRepository gendersRepository = new GendersRepository();
 
+            /*int i = 1;
+            File dir = new File("/Users/danielcorreia/IdeaProjects/Flyzerosky/src/com/images/Genders/");
+            File[] directoryListing = dir.listFiles();
+            if (directoryListing != null) {
+                for (var child : Arrays.stream(directoryListing).sorted().toArray()) {
+                    File file = (File) child;
+
+                    if(file.getName().equals(".DS_Store"))
+                        continue;
+
+                    FileInputStream fis = new FileInputStream(file);
+
+                    Gender g = gendersRepository.getById(i);
+                    g.setGender(fis);
+                    gendersRepository.update(g);
+                    i++;
+                }
+            } else {
+                // Handle the case where dir is not really a directory.
+                // Checking dir.isDirectory() above would not be sufficient
+                // to avoid race conditions with another process that deletes
+                // directories.
+            }*/
+
             ObservableList<Gender> genders = gendersRepository.getAll();
-            gendersRepository.loadCreatedUsers(genders);
-            gendersRepository.loadUpdatedUsers(genders);
+            gendersRepository.loadUsers(genders);
             gendersTable.setItems(genders);
             addTableColumns();
         } catch (Exception e) {
@@ -52,8 +76,9 @@ public class GendersController {
         TableColumn<Gender, String> tableColumnShortcut = new TableColumn<>("Shortcut");
         tableColumnShortcut.setCellValueFactory(new PropertyValueFactory<>("shortcut"));
 
-        TableColumn<Gender, ImageView> tableColumnGender = new TableColumn<>("Gender");
-        tableColumnGender.setCellValueFactory(new PropertyValueFactory<>("genderView"));
+        TableColumn<Gender, InputStream> tableColumnGender = new TableColumn<>("Gender");
+        tableColumnGender.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getGender()));
+        tableColumnGender.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Gender, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

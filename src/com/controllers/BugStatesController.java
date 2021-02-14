@@ -2,7 +2,7 @@ package com.controllers;
 
 import com.database.BugStatesRepository;
 import com.models.BugState;
-import com.models.Technology;
+import com.models.ImageTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,10 +11,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 public class BugStatesController {
 
@@ -29,34 +27,8 @@ public class BugStatesController {
     public void initialize() {
         try {
             BugStatesRepository bugStatesRepository = new BugStatesRepository();
-
-            /*int i = 1;
-            File dir = new File("/Users/danielcorreia/IdeaProjects/Flyzerosky/src/com/images/States/");
-            File[] directoryListing = dir.listFiles();
-            if (directoryListing != null) {
-                for (var child : Arrays.stream(directoryListing).sorted().toArray()) {
-                    File file = (File) child;
-
-                    if(file.getName().equals(".DS_Store"))
-                        continue;
-
-                    FileInputStream fis = new FileInputStream(file);
-
-                    BugState bs = bugStatesRepository.getById(i);
-                    bs.setState(fis);
-                    bugStatesRepository.update(bs);
-                    i++;
-                }
-            } else {
-                // Handle the case where dir is not really a directory.
-                // Checking dir.isDirectory() above would not be sufficient
-                // to avoid race conditions with another process that deletes
-                // directories.
-            }*/
-
             ObservableList<BugState> bugStates = bugStatesRepository.getAll();
-            bugStatesRepository.loadCreatedUsers(bugStates);
-            bugStatesRepository.loadUpdatedUsers(bugStates);
+            bugStatesRepository.loadUsers(bugStates);
             bugStatesTable.setItems(bugStates);
             addTableColumns();
         } catch (Exception e) {
@@ -72,8 +44,9 @@ public class BugStatesController {
         TableColumn<BugState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<BugState, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+        TableColumn<BugState, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<BugState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

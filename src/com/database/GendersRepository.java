@@ -1,5 +1,6 @@
 package com.database;
 
+import com.models.FeatureState;
 import com.models.Gender;
 import com.models.ProjectState;
 import com.models.User;
@@ -147,93 +148,26 @@ public class GendersRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<Gender> loadCreatedUsers(ObservableList<Gender> genders) throws Exception {
+    public void loadUsers(ObservableList<Gender> genders) throws Exception {
         if (genders.isEmpty())
-            return genders;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Gender gender : genders) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + gender.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    gender.setCreatedUser(user);
-                }
-            }
-            return genders;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
+        Set<String> set = new HashSet<>();
+        for (Gender gender : genders) {
+            set.add("" + gender.getCreatedUserId());
+            set.add("" + gender.getUpdatedUserId());
         }
-    }
 
-    public ObservableList<Gender> loadUpdatedUsers(ObservableList<Gender> genders) throws Exception {
-        if (genders.isEmpty())
-            return genders;
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Gender gender : genders) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + gender.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        for (Gender gender : genders) {
+            for (User user : users) {
+                if (gender.getCreatedUserId() == user.getId())
+                    gender.setCreatedUser(user);
+                if (gender.getUpdatedUserId() == user.getId())
                     gender.setUpdatedUser(user);
-                }
             }
-            return genders;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

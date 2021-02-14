@@ -1,9 +1,6 @@
 package com.database;
 
-import com.models.Bug;
-import com.models.Country;
-import com.models.Currency;
-import com.models.User;
+import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -192,93 +189,26 @@ public class CountriesRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<Country> loadCreatedUsers(ObservableList<Country> countries) throws Exception {
+    public void loadUsers(ObservableList<Country> countries) throws Exception {
         if (countries.isEmpty())
-            return countries;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Country country : countries) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + country.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    country.setCreatedUser(user);
-                }
-            }
-            return countries;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
+        Set<String> set = new HashSet<>();
+        for (Country country : countries) {
+            set.add("" + country.getCreatedUserId());
+            set.add("" + country.getUpdatedUserId());
         }
-    }
 
-    public ObservableList<Country> loadUpdatedUsers(ObservableList<Country> countries) throws Exception {
-        if (countries.isEmpty())
-            return countries;
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Country country : countries) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + country.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        for (Country country : countries) {
+            for (User user : users) {
+                if (country.getCreatedUserId() == user.getId())
+                    country.setCreatedUser(user);
+                if (country.getUpdatedUserId() == user.getId())
                     country.setUpdatedUser(user);
-                }
             }
-            return countries;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

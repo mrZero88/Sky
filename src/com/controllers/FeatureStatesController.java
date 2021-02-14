@@ -4,7 +4,7 @@ import com.database.BugStatesRepository;
 import com.database.FeatureStatesRepository;
 import com.models.BugState;
 import com.models.FeatureState;
-import com.models.Technology;
+import com.models.ImageTableCell;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,6 +13,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class FeatureStatesController {
@@ -29,8 +30,7 @@ public class FeatureStatesController {
         try {
             FeatureStatesRepository featureStatesRepository = new FeatureStatesRepository();
             ObservableList<FeatureState> featureStates = featureStatesRepository.getAll();
-            featureStatesRepository.loadCreatedUsers(featureStates);
-            featureStatesRepository.loadUpdatedUsers(featureStates);
+            featureStatesRepository.loadUsers(featureStates);
             featureStatesTable.setItems(featureStates);
             addTableColumns();
         } catch (Exception e) {
@@ -46,8 +46,9 @@ public class FeatureStatesController {
         TableColumn<FeatureState, String> tableColumnTitle = new TableColumn<>("Title");
         tableColumnTitle.setCellValueFactory(new PropertyValueFactory<>("title"));
 
-        TableColumn<FeatureState, ImageView> tableColumnState = new TableColumn<>("State");
-        tableColumnState.setCellValueFactory(new PropertyValueFactory<>("stateView"));
+        TableColumn<FeatureState, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<FeatureState, Timestamp> tableColumnCreatedAt = new TableColumn<>("Created At");
         tableColumnCreatedAt.setCellValueFactory(new PropertyValueFactory<>("createdAt"));

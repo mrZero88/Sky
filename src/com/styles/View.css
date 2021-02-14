@@ -1,6 +1,6 @@
 .view {
     -fx-background-radius: 5;
-    -fx-background-color: white;
+    -fx-background-color: linear-gradient(#232526 50%, #414345 100%);
     -fx-padding: 20;
     -fx-background-insets: 1;
 }

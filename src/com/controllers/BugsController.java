@@ -2,7 +2,8 @@ package com.controllers;
 
 import com.database.BugsRepository;
 import com.models.Bug;
-import com.models.Technology;
+import com.models.ImageTableCell;
+import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,6 +12,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 
+import java.io.InputStream;
 import java.sql.Timestamp;
 
 public class BugsController {
@@ -27,9 +29,8 @@ public class BugsController {
         try {
             BugsRepository bugsRepository = new BugsRepository();
             ObservableList<Bug> bugs = bugsRepository.getAll();
-            bugsRepository.loadCreatedUsers(bugs);
-            bugsRepository.loadUpdatedUsers(bugs);
-            bugsRepository.loadBugStates(bugs);
+            bugsRepository.loadUsers(bugs);
+            bugsRepository.loadStates(bugs);
             bugsTable.setItems(bugs);
             addTableColumns();
         } catch (Exception e) {
@@ -42,8 +43,9 @@ public class BugsController {
         TableColumn<Bug, Long> tableColumnId = new TableColumn<>("Id");
         tableColumnId.setCellValueFactory(new PropertyValueFactory<>("id"));
 
-        TableColumn<Bug, ImageView> tableColumnState = new TableColumn<>("State View");
-        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState().getStateView()));
+        TableColumn<Bug, InputStream> tableColumnState = new TableColumn<>("State");
+        tableColumnState.setCellValueFactory(cellData -> new SimpleObjectProperty<>(cellData.getValue().getState().getState()));
+        tableColumnState.setCellFactory(param -> new ImageTableCell());
 
         TableColumn<Bug, String> tableColumnStateDescription = new TableColumn<>("State");
         tableColumnStateDescription.setCellValueFactory(cellData ->

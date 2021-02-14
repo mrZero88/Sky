@@ -1,7 +1,6 @@
 package com.models;
 
 import javafx.beans.property.*;
-
 import java.sql.Timestamp;
 import java.time.Instant;
 

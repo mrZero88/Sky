@@ -15,7 +15,6 @@ public class Gender {
     private StringProperty name;
     private StringProperty shortcut;
     private ObjectProperty<InputStream> gender;
-    private ObjectProperty<ImageView> genderView;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -66,27 +65,11 @@ public class Gender {
     }
 
     public void setGender(InputStream gender) throws Exception {
-        if (gender != null) {
-            Image image = SwingFXUtils.toFXImage(ImageIO.read(gender), null);
-            genderView.get().setImage(image);
-        }
         this.gender.set(gender);
     }
 
     public ObjectProperty<InputStream> genderProperty() {
         return gender;
-    }
-
-    public ImageView getGenderView() {
-        return genderView.get();
-    }
-
-    public void setGenderView(ImageView genderView) {
-        this.genderView.set(genderView);
-    }
-
-    public ObjectProperty<ImageView> genderViewProperty() {
-        return genderView;
     }
 
     public Timestamp getCreatedAt() {
@@ -178,7 +161,6 @@ public class Gender {
         this.name = new SimpleStringProperty(this, "name");
         this.shortcut = new SimpleStringProperty(this, "shortcut");
         this.gender = new SimpleObjectProperty<>(this, "gender");
-        this.genderView = new SimpleObjectProperty<>(this, "genderView", new ImageView());
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);

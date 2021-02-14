@@ -28,8 +28,7 @@ public class TechnologiesController {
         try {
             TechnologiesRepository technologiesRepository = new TechnologiesRepository();
             ObservableList<Technology> technologies = technologiesRepository.getAll();
-            technologiesRepository.loadCreatedUsers(technologies);
-            technologiesRepository.loadUpdatedUsers(technologies);
+            technologiesRepository.loadUsers(technologies);
             technologiesTable.setItems(technologies);
             addTableColumns();
         } catch (Exception e) {

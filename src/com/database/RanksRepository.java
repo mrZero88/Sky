@@ -1,5 +1,6 @@
 package com.database;
 
+import com.models.ProjectState;
 import com.models.Rank;
 import com.models.TaskState;
 import com.models.User;
@@ -153,93 +154,26 @@ public class RanksRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<Rank> loadCreatedUsers(ObservableList<Rank> ranks) throws Exception {
+    public void loadUsers(ObservableList<Rank> ranks) throws Exception {
         if (ranks.isEmpty())
-            return ranks;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Rank rank : ranks) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + rank.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    rank.setCreatedUser(user);
-                }
-            }
-            return ranks;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
+        Set<String> set = new HashSet<>();
+        for (Rank rank : ranks) {
+            set.add("" + rank.getCreatedUserId());
+            set.add("" + rank.getUpdatedUserId());
         }
-    }
 
-    public ObservableList<Rank> loadUpdatedUsers(ObservableList<Rank> ranks) throws Exception {
-        if (ranks.isEmpty())
-            return ranks;
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Rank rank : ranks) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + rank.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        for (Rank rank : ranks) {
+            for (User user : users) {
+                if (rank.getCreatedUserId() == user.getId())
+                    rank.setCreatedUser(user);
+                if (rank.getUpdatedUserId() == user.getId())
                     rank.setUpdatedUser(user);
-                }
             }
-            return ranks;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

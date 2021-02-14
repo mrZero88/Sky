@@ -151,123 +151,46 @@ public class FeaturesRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<Feature> loadCreatedUsers(ObservableList<Feature> features) throws Exception {
+    public void loadUsers(ObservableList<Feature> features) throws Exception {
         if (features.isEmpty())
-            return features;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Feature feature : features) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + feature.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        Set<String> set = new HashSet<>();
+        for (Feature feature : features) {
+            set.add("" + feature.getCreatedUserId());
+            set.add("" + feature.getUpdatedUserId());
+        }
+
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
+
+        for (Feature feature : features) {
+            for (User user : users) {
+                if (feature.getCreatedUserId() == user.getId())
                     feature.setCreatedUser(user);
-                }
-            }
-            return features;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
-        }
-    }
-
-    public ObservableList<Feature> loadUpdatedUsers(ObservableList<Feature> features) throws Exception {
-        if (features.isEmpty())
-            return features;
-
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Feature feature : features) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + feature.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+                if (feature.getUpdatedUserId() == user.getId())
                     feature.setUpdatedUser(user);
-                }
             }
-            return features;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 
-    public ObservableList<Feature> loadFeatureStates(ObservableList<Feature> features) throws Exception {
+    public void loadStates(ObservableList<Feature> features) throws Exception {
         if (features.isEmpty())
-            return features;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (Feature feature : features) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from feature_states where active=true and id=" + feature.getStateId());
-                while (resultSet.next()) {
-                    FeatureState featureState = new FeatureState();
-                    featureState.setId(resultSet.getInt("id"));
-                    featureState.setTitle(resultSet.getString("title"));
-                    featureState.setState(resultSet.getBinaryStream("state"));
-                    featureState.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    featureState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    featureState.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    featureState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    featureState.setActive(resultSet.getBoolean("active"));
+        Set<String> set = new HashSet<>();
+        for (Feature feature : features) {
+            set.add("" + feature.getStateId());
+        }
+
+        FeatureStatesRepository fsr = new FeatureStatesRepository();
+        ObservableList<FeatureState> featureStates = fsr.getByIds(set);
+
+        for (Feature feature : features) {
+            for (FeatureState featureState : featureStates) {
+                if (feature.getStateId() == featureState.getId())
                     feature.setState(featureState);
-                }
             }
-            return features;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }

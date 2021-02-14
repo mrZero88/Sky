@@ -14,7 +14,6 @@ public class Country {
     private IntegerProperty id;
     private StringProperty name;
     private ObjectProperty<InputStream> flag;
-    private ObjectProperty<ImageView> flagView;
     private StringProperty shortcut;
     private IntegerProperty continentId;
     private StringProperty fileName;
@@ -56,27 +55,11 @@ public class Country {
     }
 
     public void setFlag(InputStream flag) throws Exception {
-        if (flag != null) {
-            Image image = SwingFXUtils.toFXImage(ImageIO.read(flag), null);
-            flagView.get().setImage(image);
-        }
         this.flag.set(flag);
     }
 
     public ObjectProperty<InputStream> flagProperty() {
         return flag;
-    }
-
-    public ImageView getFlagView() {
-        return flagView.get();
-    }
-
-    public void setFlagView(ImageView flagView) {
-        this.flagView.set(flagView);
-    }
-
-    public ObjectProperty<ImageView> flagViewProperty() {
-        return flagView;
     }
 
     public String getShortcut() {
@@ -203,7 +186,6 @@ public class Country {
         this.id = new SimpleIntegerProperty(this, "id");
         this.name = new SimpleStringProperty(this, "name");
         this.flag = new SimpleObjectProperty<>(this, "flag");
-        this.flagView = new SimpleObjectProperty<>(this, "flagView", new ImageView());
         this.shortcut = new SimpleStringProperty(this, "shortcut");
         this.continentId = new SimpleIntegerProperty(this, "continentId",7);
         this.fileName = new SimpleStringProperty(this, "fileName");

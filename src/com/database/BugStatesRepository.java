@@ -166,93 +166,26 @@ public class BugStatesRepository extends BaseRepository {
         }
     }
 
-    public ObservableList<BugState> loadCreatedUsers(ObservableList<BugState> bugStates) throws Exception {
+    public void loadUsers(ObservableList<BugState> bugStates) throws Exception {
         if (bugStates.isEmpty())
-            return bugStates;
+            return;
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (BugState bugState : bugStates) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + bugState.getCreatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
-                    bugState.setCreatedUser(user);
-                }
-            }
-            return bugStates;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
+        Set<String> set = new HashSet<>();
+        for (BugState bugState : bugStates) {
+            set.add("" + bugState.getCreatedUserId());
+            set.add("" + bugState.getUpdatedUserId());
         }
-    }
 
-    public ObservableList<BugState> loadUpdatedUsers(ObservableList<BugState> bugStates) throws Exception {
-        if (bugStates.isEmpty())
-            return bugStates;
+        UsersRepository ur = new UsersRepository();
+        ObservableList<User> users = ur.getByIds(set);
 
-        try {
-            connect = DriverManager.getConnection(CONN);
-            for (BugState bugState : bugStates) {
-                statement = connect.createStatement();
-                resultSet = statement.executeQuery("select * from users where active=true and id=" + bugState.getUpdatedUserId());
-                while (resultSet.next()) {
-                    User user = new User();
-                    user.setId(resultSet.getLong("id"));
-                    user.setFirstName(resultSet.getString("first_name"));
-                    user.setLastName(resultSet.getString("last_name"));
-                    user.setUsername(resultSet.getString("username"));
-                    user.setEmail(resultSet.getString("email"));
-                    user.setEmailVerifiedAt(resultSet.getTimestamp("email_verified_at"));
-                    user.setPassword(resultSet.getString("password"));
-                    user.setTypeId(resultSet.getByte("type_id"));
-                    user.setIsSuperUser(resultSet.getBoolean("is_super_user"));
-                    user.setCountryId(resultSet.getInt("country_id"));
-                    user.setPicture(resultSet.getBinaryStream("picture"));
-                    user.setBirthDate(resultSet.getDate("birth_date"));
-                    user.setAdress(resultSet.getString("adress"));
-                    user.setPostalCode(resultSet.getString("postal_code"));
-                    user.setPhoneNumber(resultSet.getString("phone_number"));
-                    user.setRememberToken(resultSet.getString("remember_token"));
-                    user.setGenderId(resultSet.getInt("gender_id"));
-                    user.setAbbreviation(resultSet.getString("abbreviation"));
-                    user.setCreatedAt(resultSet.getTimestamp("created_at"));
-                    user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
-                    user.setCreatedUserId(resultSet.getLong("created_user_id"));
-                    user.setUpdatedUserId(resultSet.getLong("updated_user_id"));
-                    user.setActive(resultSet.getBoolean("active"));
+        for (BugState bugState : bugStates) {
+            for (User user : users) {
+                if (bugState.getCreatedUserId() == user.getId())
+                    bugState.setCreatedUser(user);
+                if (bugState.getUpdatedUserId() == user.getId())
                     bugState.setUpdatedUser(user);
-                }
             }
-            return bugStates;
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            closeConnections();
         }
     }
 }
