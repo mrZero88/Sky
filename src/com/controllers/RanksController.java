@@ -1,23 +1,17 @@
 package com.controllers;
 
 import com.database.RanksRepository;
-import com.models.ImageTableCell;
+import com.helpers.ImageTableCell;
 import com.models.Rank;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javax.swing.text.html.ImageView;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 
 public class RanksController {
 

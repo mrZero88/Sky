@@ -1,7 +1,7 @@
 package com.controllers;
 
 import com.database.UsersRepository;
-import com.models.ImageTableCell;
+import com.helpers.ImageTableCell;
 import com.models.User;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -9,14 +9,10 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.ImageView;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.util.Arrays;
 
 public class UsersController {
 

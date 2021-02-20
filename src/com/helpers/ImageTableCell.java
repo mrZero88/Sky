@@ -1,4 +1,4 @@
-package com.models;
+package com.helpers;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.control.TableCell;
