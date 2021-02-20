@@ -205,6 +205,18 @@ public class Customer {
         return updatedUser;
     }
 
+    public Country getCountry() {
+        return country.get();
+    }
+
+    public void setCountry(Country country) {
+        this.country.set(country);
+    }
+
+    public ObjectProperty<Country> countryProperty() {
+        return country;
+    }
+
     public Customer() {
         this.id = new SimpleLongProperty(this, "id");
         this.name = new SimpleStringProperty(this, "name");

@@ -226,4 +226,24 @@ public class CustomersRepository extends BaseRepository {
             }
         }
     }
+
+    public void loadCountries(ObservableList<Customer> customers) throws Exception {
+        if (customers.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Customer customer : customers) {
+            set.add("" + customer.getCountryId());
+        }
+
+        CountriesRepository cr = new CountriesRepository();
+        ObservableList<Country> countries = cr.getByIds(set);
+
+        for (Customer customer : customers) {
+            for (Country country : countries) {
+                if (customer.getCountryId() == country.getId())
+                    customer.setCountry(country);
+            }
+        }
+    }
 }
