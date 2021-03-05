@@ -32,6 +32,7 @@ public class User {
     private StringProperty rememberToken;
     private IntegerProperty genderId;
     private StringProperty abbreviation;
+    private BooleanProperty isCandidate;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -258,6 +259,18 @@ public class User {
         return abbreviation;
     }
 
+    public boolean getIsCandidate() {
+        return isCandidate.get();
+    }
+
+    public void setIsCandidate(boolean isCandidate) {
+        this.isCandidate.set(isCandidate);
+    }
+
+    public BooleanProperty isCandidateProperty() {
+        return isCandidate;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt.get();
     }
@@ -373,6 +386,7 @@ public class User {
         this.rememberToken = new SimpleStringProperty(this, "rememberToken");
         this.genderId = new SimpleIntegerProperty(this, "genderId", 1);
         this.abbreviation = new SimpleStringProperty(this, "abbreviation");
+        this.isCandidate = new SimpleBooleanProperty(this, "isCandidate",true);
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);

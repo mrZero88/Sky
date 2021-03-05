@@ -1,9 +1,6 @@
 package com.database;
 
-import com.models.Country;
-import com.models.Currency;
-import com.models.Feature;
-import com.models.User;
+import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -72,6 +69,34 @@ public class CurrenciesRepository extends BaseRepository {
             currency.setUpdatedUserId(resultSet.getLong("updated_user_id"));
             currency.setActive(resultSet.getBoolean("active"));
             return currency;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
+    public ObservableList<Currency> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<Currency> currencies = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from currencies where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                Currency currency = new Currency();
+                currency.setId(resultSet.getInt("id"));
+                currency.setTitle(resultSet.getString("title"));
+                currency.setSymbol(resultSet.getString("symbol"));
+                currency.setIso(resultSet.getString("iso"));
+                currency.setCreatedAt(resultSet.getTimestamp("created_at"));
+                currency.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                currency.setCreatedUserId(resultSet.getLong("created_user_id"));
+                currency.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                currency.setActive(resultSet.getBoolean("active"));
+                currencies.add(currency);
+            }
+            return FXCollections.observableList(currencies);
         } catch (Exception e) {
             throw e;
         } finally {

@@ -73,6 +73,33 @@ public class ProjectStatesRepository extends BaseRepository {
         }
     }
 
+    public ObservableList<ProjectState> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<ProjectState> projectStates = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from projects where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                ProjectState projectState = new ProjectState();
+                projectState.setId(resultSet.getInt("id"));
+                projectState.setTitle(resultSet.getString("title"));
+                projectState.setState(resultSet.getBinaryStream("state"));
+                projectState.setCreatedAt(resultSet.getTimestamp("created_at"));
+                projectState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                projectState.setCreatedUserId(resultSet.getLong("created_user_id"));
+                projectState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                projectState.setActive(resultSet.getBoolean("active"));
+                projectStates.add(projectState);
+            }
+            return FXCollections.observableList(projectStates);
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
     public ObservableList<ProjectState> getAll() throws Exception {
         try {
             connect = DriverManager.getConnection(CONN);
