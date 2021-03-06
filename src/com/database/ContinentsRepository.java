@@ -30,7 +30,7 @@ public class ContinentsRepository extends BaseRepository {
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?)");
             preparedStatement.setString(1, continent.getName());
             preparedStatement.setTimestamp(2, continent.getCreatedAt());
             preparedStatement.setTimestamp(3, continent.getUpdatedAt());

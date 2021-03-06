@@ -167,7 +167,7 @@ public class User {
         return picture.get();
     }
 
-    public void setPicture(InputStream picture) throws Exception{
+    public void setPicture(InputStream picture) {
         this.picture.set(picture);
     }
 
