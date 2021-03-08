@@ -33,6 +33,7 @@ public class User {
     private IntegerProperty genderId;
     private StringProperty abbreviation;
     private BooleanProperty isCandidate;
+    private BooleanProperty isRejected;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -271,6 +272,18 @@ public class User {
         return isCandidate;
     }
 
+    public boolean getIsRejected() {
+        return isRejected.get();
+    }
+
+    public void setIsRejected(boolean isRejected) {
+        this.isRejected.set(isRejected);
+    }
+
+    public BooleanProperty isRejectedProperty() {
+        return isRejected;
+    }
+
     public Timestamp getCreatedAt() {
         return createdAt.get();
     }
@@ -387,6 +400,7 @@ public class User {
         this.genderId = new SimpleIntegerProperty(this, "genderId", 1);
         this.abbreviation = new SimpleStringProperty(this, "abbreviation");
         this.isCandidate = new SimpleBooleanProperty(this, "isCandidate",true);
+        this.isRejected = new SimpleBooleanProperty(this, "isRejected",false);
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);

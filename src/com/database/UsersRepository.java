@@ -40,11 +40,12 @@ public class UsersRepository extends BaseRepository {
                             "gender_id, " +
                             "abbreviation, " +
                             "is_candidate, " +
+                            "is_rejected, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getUserName());
@@ -61,10 +62,11 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setInt(14, user.getGenderId());
             preparedStatement.setString(15, user.getAbbreviation());
             preparedStatement.setBoolean(16, user.getIsCandidate());
-            preparedStatement.setTimestamp(17, user.getCreatedAt());
-            preparedStatement.setTimestamp(18, user.getUpdatedAt());
-            preparedStatement.setLong(19, user.getCreatedUserId());
-            preparedStatement.setLong(20, user.getUpdatedUserId());
+            preparedStatement.setBoolean(17, user.getIsRejected());
+            preparedStatement.setTimestamp(18, user.getCreatedAt());
+            preparedStatement.setTimestamp(19, user.getUpdatedAt());
+            preparedStatement.setLong(20, user.getCreatedUserId());
+            preparedStatement.setLong(21, user.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from users order by id desc limit 1");
@@ -105,6 +107,7 @@ public class UsersRepository extends BaseRepository {
             user.setGenderId(resultSet.getInt("gender_id"));
             user.setAbbreviation(resultSet.getString("abbreviation"));
             user.setIsCandidate(resultSet.getBoolean("is_candidate"));
+            user.setIsRejected(resultSet.getBoolean("is_rejected"));
             user.setCreatedAt(resultSet.getTimestamp("created_at"));
             user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -146,6 +149,7 @@ public class UsersRepository extends BaseRepository {
                 user.setGenderId(resultSet.getInt("gender_id"));
                 user.setAbbreviation(resultSet.getString("abbreviation"));
                 user.setIsCandidate(resultSet.getBoolean("is_candidate"));
+                user.setIsRejected(resultSet.getBoolean("is_rejected"));
                 user.setCreatedAt(resultSet.getTimestamp("created_at"));
                 user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -188,6 +192,7 @@ public class UsersRepository extends BaseRepository {
                 user.setGenderId(resultSet.getInt("gender_id"));
                 user.setAbbreviation(resultSet.getString("abbreviation"));
                 user.setIsCandidate(resultSet.getBoolean("is_candidate"));
+                user.setIsRejected(resultSet.getBoolean("is_rejected"));
                 user.setCreatedAt(resultSet.getTimestamp("created_at"));
                 user.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 user.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -227,6 +232,7 @@ public class UsersRepository extends BaseRepository {
                             " gender_id = ?, " +
                             " abbreviation = ?, " +
                             " is_candidate = ?, " +
+                            " is_rejected = ?, " +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
@@ -248,9 +254,10 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setInt(16, user.getGenderId());
             preparedStatement.setString(17, user.getAbbreviation());
             preparedStatement.setBoolean(18, user.getIsCandidate());
-            preparedStatement.setTimestamp(19, user.getUpdatedAt());
-            preparedStatement.setLong(20, user.getUpdatedUserId());
-            preparedStatement.setLong(21, user.getId());
+            preparedStatement.setBoolean(19, user.getIsRejected());
+            preparedStatement.setTimestamp(20, user.getUpdatedAt());
+            preparedStatement.setLong(21, user.getUpdatedUserId());
+            preparedStatement.setLong(22, user.getId());
             preparedStatement.executeUpdate();
             return user;
         } catch (Exception e) {
