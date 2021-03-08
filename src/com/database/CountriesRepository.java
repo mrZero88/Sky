@@ -1,12 +1,12 @@
 package com.database;
 
+import com.base.BaseRepository;
 import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
-import java.sql.Types;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,6 +1,6 @@
 package com.database;
 
-import com.models.BugState;
+import com.base.BaseRepository;
 import com.models.Continent;
 import com.models.User;
 import javafx.collections.FXCollections;

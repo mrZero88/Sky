@@ -1,9 +1,9 @@
 package com.database;
 
+import com.base.BaseRepository;
 import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 import java.sql.DriverManager;
 import java.sql.Timestamp;
@@ -67,6 +67,33 @@ public class TaskStatesRepository extends BaseRepository {
             taskState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
             taskState.setActive(resultSet.getBoolean("active"));
             return taskState;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
+    public ObservableList<TaskState> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<TaskState> taskStates = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from task_states where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                TaskState taskState = new TaskState();
+                taskState.setId(resultSet.getInt("id"));
+                taskState.setTitle(resultSet.getString("title"));
+                taskState.setState(resultSet.getBinaryStream("state"));
+                taskState.setCreatedAt(resultSet.getTimestamp("created_at"));
+                taskState.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                taskState.setCreatedUserId(resultSet.getLong("created_user_id"));
+                taskState.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                taskState.setActive(resultSet.getBoolean("active"));
+                taskStates.add(taskState);
+            }
+            return FXCollections.observableList(taskStates);
         } catch (Exception e) {
             throw e;
         } finally {

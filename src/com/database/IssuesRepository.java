@@ -1,5 +1,6 @@
 package com.database;
 
+import com.base.BaseRepository;
 import com.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -75,6 +76,36 @@ public class IssuesRepository extends BaseRepository {
             issue.setUpdatedUserId(resultSet.getLong("updated_user_id"));
             issue.setActive(resultSet.getBoolean("active"));
             return issue;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            closeConnections();
+        }
+    }
+
+    public ObservableList<Issue> getByIds(Set<String> ids) throws Exception {
+        try {
+            connect = DriverManager.getConnection(CONN);
+            List<Issue> issues = new ArrayList<>();
+            statement = connect.createStatement();
+            String idsWithComma = String.join(",", ids);
+            resultSet = statement.executeQuery("select * from issues where id in (" + idsWithComma + ")");
+            while (resultSet.next()) {
+                Issue issue = new Issue();
+                issue.setId(resultSet.getLong("id"));
+                issue.setTitle(resultSet.getString("title"));
+                issue.setDescription(resultSet.getString("description"));
+                issue.setProjectId(resultSet.getLong("project_id"));
+                issue.setTypeId(resultSet.getInt("type_id"));
+                issue.setStateId(resultSet.getInt("state_id"));
+                issue.setCreatedAt(resultSet.getTimestamp("created_at"));
+                issue.setUpdatedAt(resultSet.getTimestamp("updated_at"));
+                issue.setCreatedUserId(resultSet.getLong("created_user_id"));
+                issue.setUpdatedUserId(resultSet.getLong("updated_user_id"));
+                issue.setActive(resultSet.getBoolean("active"));
+                issues.add(issue);
+            }
+            return FXCollections.observableList(issues);
         } catch (Exception e) {
             throw e;
         } finally {

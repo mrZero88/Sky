@@ -1,6 +1,6 @@
 package com.database;
 
-import com.models.Continent;
+import com.base.BaseRepository;
 import com.models.Team;
 import com.models.User;
 import javafx.collections.FXCollections;

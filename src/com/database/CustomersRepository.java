@@ -1,5 +1,6 @@
 package com.database;
 
+import com.base.BaseRepository;
 import com.models.Country;
 import com.models.Customer;
 import com.models.User;

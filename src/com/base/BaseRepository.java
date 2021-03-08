@@ -1,4 +1,6 @@
-package com.database;
+package com.base;
+
+import com.utils.ConfigPropertiesReader;
 
 import java.sql.*;
 

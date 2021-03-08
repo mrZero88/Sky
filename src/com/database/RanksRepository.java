@@ -1,8 +1,7 @@
 package com.database;
 
-import com.models.ProjectState;
+import com.base.BaseRepository;
 import com.models.Rank;
-import com.models.TaskState;
 import com.models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

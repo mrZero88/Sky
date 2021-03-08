@@ -1,5 +1,6 @@
 package com.database;
 
+import com.base.BaseRepository;
 import com.models.Bug;
 import com.models.BugState;
 import com.models.User;
