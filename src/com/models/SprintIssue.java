@@ -4,7 +4,7 @@ import javafx.beans.property.*;
 import java.sql.Timestamp;
 import java.time.Instant;
 
-public class SprintBacklog {
+public class SprintIssue {
 
     private LongProperty id;
     private LongProperty issueId;
@@ -177,7 +177,7 @@ public class SprintBacklog {
         return sprint;
     }
 
-    public SprintBacklog() {
+    public SprintIssue() {
         this.id = new SimpleLongProperty(this, "id");
         this.issueId = new SimpleLongProperty(this, "issueId");
         this.sprintId = new SimpleLongProperty(this, "sprintId");
