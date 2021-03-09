@@ -14,6 +14,7 @@ public class Sprint {
     private LongProperty projectId;
     private LongProperty teamId;
     private StringProperty notes;
+    private LongProperty previousSprintId;
     private ObjectProperty<Timestamp> createdAt;
     private ObjectProperty<Timestamp> updatedAt;
     private LongProperty createdUserId;
@@ -24,6 +25,7 @@ public class Sprint {
     private ObjectProperty<User> updatedUser;
     private ObjectProperty<Project> project;
     private ObjectProperty<Team> team;
+    private ObjectProperty<Sprint> previousSprint;
 
     public long getId() {
         return id.get();
@@ -107,6 +109,18 @@ public class Sprint {
 
     public StringProperty notesProperty() {
         return notes;
+    }
+
+    public long getPreviousSprintId() {
+        return previousSprintId.get();
+    }
+
+    public void setPreviousSprintId(long previousSprintId) {
+        this.previousSprintId.set(previousSprintId);
+    }
+
+    public LongProperty previousSprintIdProperty() {
+        return previousSprintId;
     }
 
     public Timestamp getCreatedAt() {
@@ -217,6 +231,18 @@ public class Sprint {
         return team;
     }
 
+    public Sprint getPreviousSprint() {
+        return previousSprint.get();
+    }
+
+    public void setPreviousSprint(Sprint previousSprint) {
+        this.previousSprint.set(previousSprint);
+    }
+
+    public ObjectProperty<Sprint> previousSprintProperty() {
+        return previousSprint;
+    }
+
     public Sprint() {
         this.id = new SimpleLongProperty(this, "id");
         this.title = new SimpleStringProperty(this, "title");
@@ -225,6 +251,7 @@ public class Sprint {
         this.projectId = new SimpleLongProperty(this, "projectId");
         this.teamId = new SimpleLongProperty(this, "teamId");
         this.notes = new SimpleStringProperty(this, "notes");
+        this.previousSprintId = new SimpleLongProperty(this, "previousSprintId");
         this.createdAt = new SimpleObjectProperty<>(this, "createdAt", Timestamp.from(Instant.now()));
         this.updatedAt = new SimpleObjectProperty<>(this, "updatedAt", Timestamp.from(Instant.now()));
         this.createdUserId = new SimpleLongProperty(this, "createdUserId", 1);
@@ -234,6 +261,7 @@ public class Sprint {
         this.updatedUser = new SimpleObjectProperty<>(this, "updatedUser");
         this.project = new SimpleObjectProperty<>(this, "project");
         this.team = new SimpleObjectProperty<>(this, "team");
+        this.previousSprint = new SimpleObjectProperty<>(this, "previousSprint");
     }
 
     @Override

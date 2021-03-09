@@ -30,21 +30,23 @@ public class SprintsRepository extends BaseRepository {
                             "project_id, " +
                             "team_id, " +
                             "notes, " +
+                            "previous_sprint_id, " +
                             "created_at, " +
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, sprint.getTitle());
             preparedStatement.setDate(2, sprint.getStart());
             preparedStatement.setDate(3, sprint.getEnd());
             preparedStatement.setLong(4, sprint.getProjectId());
             preparedStatement.setLong(5, sprint.getTeamId());
             preparedStatement.setString(6, sprint.getNotes());
-            preparedStatement.setTimestamp(7, sprint.getCreatedAt());
-            preparedStatement.setTimestamp(8, sprint.getUpdatedAt());
-            preparedStatement.setLong(9, sprint.getCreatedUserId());
-            preparedStatement.setLong(10, sprint.getUpdatedUserId());
+            preparedStatement.setLong(7, sprint.getPreviousSprintId());
+            preparedStatement.setTimestamp(8, sprint.getCreatedAt());
+            preparedStatement.setTimestamp(9, sprint.getUpdatedAt());
+            preparedStatement.setLong(10, sprint.getCreatedUserId());
+            preparedStatement.setLong(11, sprint.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from sprints order by id desc limit 1");
@@ -73,6 +75,7 @@ public class SprintsRepository extends BaseRepository {
             sprint.setProjectId(resultSet.getLong("project_id"));
             sprint.setTeamId(resultSet.getLong("team_id"));
             sprint.setNotes(resultSet.getString("notes"));
+            sprint.setPreviousSprintId(resultSet.getLong("previous_sprint_id"));
             sprint.setCreatedAt(resultSet.getTimestamp("created_at"));
             sprint.setUpdatedAt(resultSet.getTimestamp("updated_at"));
             sprint.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -102,6 +105,7 @@ public class SprintsRepository extends BaseRepository {
                 sprint.setProjectId(resultSet.getLong("project_id"));
                 sprint.setTeamId(resultSet.getLong("team_id"));
                 sprint.setNotes(resultSet.getString("notes"));
+                sprint.setPreviousSprintId(resultSet.getLong("previous_sprint_id"));
                 sprint.setCreatedAt(resultSet.getTimestamp("created_at"));
                 sprint.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 sprint.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -132,6 +136,7 @@ public class SprintsRepository extends BaseRepository {
                 sprint.setProjectId(resultSet.getLong("project_id"));
                 sprint.setTeamId(resultSet.getLong("team_id"));
                 sprint.setNotes(resultSet.getString("notes"));
+                sprint.setPreviousSprintId(resultSet.getLong("previous_sprint_id"));
                 sprint.setCreatedAt(resultSet.getTimestamp("created_at"));
                 sprint.setUpdatedAt(resultSet.getTimestamp("updated_at"));
                 sprint.setCreatedUserId(resultSet.getLong("created_user_id"));
@@ -159,6 +164,7 @@ public class SprintsRepository extends BaseRepository {
                             " project_id = ?," +
                             " team_id = ?," +
                             " notes = ?," +
+                            " previous_sprint_id = ?," +
                             " updated_at = ?, " +
                             " updated_user_id = ? " +
                             "where id = ?");
@@ -168,9 +174,10 @@ public class SprintsRepository extends BaseRepository {
             preparedStatement.setLong(4, sprint.getProjectId());
             preparedStatement.setLong(5, sprint.getTeamId());
             preparedStatement.setString(6, sprint.getNotes());
-            preparedStatement.setTimestamp(7, sprint.getUpdatedAt());
-            preparedStatement.setLong(8, sprint.getUpdatedUserId());
-            preparedStatement.setLong(9, sprint.getId());
+            preparedStatement.setLong(7, sprint.getPreviousSprintId());
+            preparedStatement.setTimestamp(8, sprint.getUpdatedAt());
+            preparedStatement.setLong(9, sprint.getUpdatedUserId());
+            preparedStatement.setLong(10, sprint.getId());
             preparedStatement.executeUpdate();
             return sprint;
         } catch (Exception e) {
@@ -255,6 +262,26 @@ public class SprintsRepository extends BaseRepository {
             for (Team team : teams) {
                 if (sprint.getTeamId() == team.getId())
                     sprint.setTeam(team);
+            }
+        }
+    }
+
+    public void loadPreviosSprints(ObservableList<Sprint> sprints) throws Exception {
+        if (sprints.isEmpty())
+            return;
+
+        Set<String> set = new HashSet<>();
+        for (Sprint sprint : sprints) {
+            set.add("" + sprint.getPreviousSprintId());
+        }
+
+        SprintsRepository sr = new SprintsRepository();
+        ObservableList<Sprint> previousSprints = sr.getByIds(set);
+
+        for (Sprint sprint : sprints) {
+            for (Sprint prevSprint : previousSprints) {
+                if (sprint.getTeamId() == prevSprint.getId())
+                    sprint.setPreviousSprint(prevSprint);
             }
         }
     }
