@@ -266,7 +266,7 @@ public class SprintsRepository extends BaseRepository {
         }
     }
 
-    public void loadPreviosSprints(ObservableList<Sprint> sprints) throws Exception {
+    public void loadPreviousSprints(ObservableList<Sprint> sprints) throws Exception {
         if (sprints.isEmpty())
             return;
 

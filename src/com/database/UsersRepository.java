@@ -34,8 +34,6 @@ public class UsersRepository extends BaseRepository {
                             "country_id, " +
                             "picture, " +
                             "birth_date, " +
-                            "adress, " +
-                            "postal_code, " +
                             "phone_number, " +
                             "gender_id, " +
                             "abbreviation, " +
@@ -45,7 +43,7 @@ public class UsersRepository extends BaseRepository {
                             "updated_at, " +
                             "created_user_id, " +
                             "updated_user_id) " +
-                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
             preparedStatement.setString(1, user.getFirstName());
             preparedStatement.setString(2, user.getLastName());
             preparedStatement.setString(3, user.getUserName());
@@ -56,17 +54,15 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setInt(8, user.getCountryId());
             preparedStatement.setBinaryStream(9, user.getPicture());
             preparedStatement.setDate(10, user.getBirthDate());
-            preparedStatement.setString(11, user.getAdress());
-            preparedStatement.setString(12, user.getPostalCode());
-            preparedStatement.setString(13, user.getPhoneNumber());
-            preparedStatement.setInt(14, user.getGenderId());
-            preparedStatement.setString(15, user.getAbbreviation());
-            preparedStatement.setBoolean(16, user.getIsCandidate());
-            preparedStatement.setBoolean(17, user.getIsRejected());
-            preparedStatement.setTimestamp(18, user.getCreatedAt());
-            preparedStatement.setTimestamp(19, user.getUpdatedAt());
-            preparedStatement.setLong(20, user.getCreatedUserId());
-            preparedStatement.setLong(21, user.getUpdatedUserId());
+            preparedStatement.setString(11, user.getPhoneNumber());
+            preparedStatement.setInt(12, user.getGenderId());
+            preparedStatement.setString(13, user.getAbbreviation());
+            preparedStatement.setBoolean(14, user.getIsCandidate());
+            preparedStatement.setBoolean(15, user.getIsRejected());
+            preparedStatement.setTimestamp(16, user.getCreatedAt());
+            preparedStatement.setTimestamp(17, user.getUpdatedAt());
+            preparedStatement.setLong(18, user.getCreatedUserId());
+            preparedStatement.setLong(19, user.getUpdatedUserId());
             if (preparedStatement.executeUpdate() == 1) {
                 statement = connect.createStatement();
                 resultSet = statement.executeQuery("select id from users order by id desc limit 1");
@@ -100,8 +96,6 @@ public class UsersRepository extends BaseRepository {
             user.setCountryId(resultSet.getInt("country_id"));
             user.setPicture(resultSet.getBinaryStream("picture"));
             user.setBirthDate(resultSet.getDate("birth_date"));
-            user.setAdress(resultSet.getString("adress"));
-            user.setPostalCode(resultSet.getString("postal_code"));
             user.setPhoneNumber(resultSet.getString("phone_number"));
             user.setRememberToken(resultSet.getString("remember_token"));
             user.setGenderId(resultSet.getInt("gender_id"));
@@ -142,8 +136,6 @@ public class UsersRepository extends BaseRepository {
                 user.setCountryId(resultSet.getInt("country_id"));
                 user.setPicture(resultSet.getBinaryStream("picture"));
                 user.setBirthDate(resultSet.getDate("birth_date"));
-                user.setAdress(resultSet.getString("adress"));
-                user.setPostalCode(resultSet.getString("postal_code"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setRememberToken(resultSet.getString("remember_token"));
                 user.setGenderId(resultSet.getInt("gender_id"));
@@ -185,8 +177,6 @@ public class UsersRepository extends BaseRepository {
                 user.setCountryId(resultSet.getInt("country_id"));
                 user.setPicture(resultSet.getBinaryStream("picture"));
                 user.setBirthDate(resultSet.getDate("birth_date"));
-                user.setAdress(resultSet.getString("adress"));
-                user.setPostalCode(resultSet.getString("postal_code"));
                 user.setPhoneNumber(resultSet.getString("phone_number"));
                 user.setRememberToken(resultSet.getString("remember_token"));
                 user.setGenderId(resultSet.getInt("gender_id"));
@@ -225,8 +215,6 @@ public class UsersRepository extends BaseRepository {
                             " country_id = ?, " +
                             " picture = ?, " +
                             " birth_date = ?, " +
-                            " adress = ?, " +
-                            " postal_code = ?, " +
                             " phone_number = ?, " +
                             " remember_token = ?, " +
                             " gender_id = ?, " +
@@ -247,17 +235,15 @@ public class UsersRepository extends BaseRepository {
             preparedStatement.setInt(9, user.getCountryId());
             preparedStatement.setBinaryStream(10, user.getPicture());
             preparedStatement.setDate(11, user.getBirthDate());
-            preparedStatement.setString(12, user.getAdress());
-            preparedStatement.setString(13, user.getPostalCode());
-            preparedStatement.setString(14, user.getPhoneNumber());
-            preparedStatement.setString(15, user.getRememberToken());
-            preparedStatement.setInt(16, user.getGenderId());
-            preparedStatement.setString(17, user.getAbbreviation());
-            preparedStatement.setBoolean(18, user.getIsCandidate());
-            preparedStatement.setBoolean(19, user.getIsRejected());
-            preparedStatement.setTimestamp(20, user.getUpdatedAt());
-            preparedStatement.setLong(21, user.getUpdatedUserId());
-            preparedStatement.setLong(22, user.getId());
+            preparedStatement.setString(12, user.getPhoneNumber());
+            preparedStatement.setString(13, user.getRememberToken());
+            preparedStatement.setInt(14, user.getGenderId());
+            preparedStatement.setString(15, user.getAbbreviation());
+            preparedStatement.setBoolean(16, user.getIsCandidate());
+            preparedStatement.setBoolean(17, user.getIsRejected());
+            preparedStatement.setTimestamp(18, user.getUpdatedAt());
+            preparedStatement.setLong(19, user.getUpdatedUserId());
+            preparedStatement.setLong(20, user.getId());
             preparedStatement.executeUpdate();
             return user;
         } catch (Exception e) {
